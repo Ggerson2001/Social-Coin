@@ -1,3 +1,5 @@
+import { Outlet } from 'react-router-dom';
+import Dashboard from '../Screens/Dashboard';
 import * as React from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -20,20 +22,17 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../Components/listItems';
 import { useNavigate } from "react-router-dom";
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PeopleIcon from '@mui/icons-material/People';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import LayersIcon from '@mui/icons-material/Layers';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
-
-// function Copyright(props) {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
 
 const drawerWidth = 240;
 
@@ -81,18 +80,19 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+
 const mdTheme = createTheme();
 
-
-function DashboardContent() {
-  const [open, setOpen] = React.useState(true);
+const Layout = () => {
+    const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   const navigate = useNavigate();
   return (
-    <ThemeProvider theme={mdTheme}>
+    <div className="layout">
+        <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
@@ -149,7 +149,14 @@ function DashboardContent() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+          <ListItemButton
+          onClick={() => navigate('/test')}
+          >
+                <ListItemIcon>
+                 <DashboardIcon />
+                </ListItemIcon>
+            <ListItemText primary="Dashboard" />
+         </ListItemButton>
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>
@@ -168,15 +175,15 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            
+            <Outlet/>
             {/* <Copyright sx={{ pt: 4 }} /> */}
           </Container>
         </Box>
       </Box>
     </ThemeProvider>
+      </div>
+   
   );
-}
+};
 
-export default function Dashboard() {
-  return <DashboardContent />;
-}
+export default Layout;
