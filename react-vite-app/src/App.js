@@ -1,6 +1,5 @@
 import LoginScreen from './Screens/Login'
 import SignUpScreen from './Screens/SignUp'
-import Home from './Screens/Dashboard'
 import { Routes, Route } from 'react-router-dom';
 import Layout from './Components/Layout';
 import Test from './Screens/Test'
@@ -29,3 +28,4 @@ function App() {
 }
 
 export default App
+

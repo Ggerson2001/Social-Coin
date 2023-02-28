@@ -16,6 +16,9 @@ import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
 
+// how to make an get fetch request?  
+
+
   
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
