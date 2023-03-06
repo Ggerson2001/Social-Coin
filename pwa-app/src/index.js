@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
+import * as serviceWorkerRegistration from './utils/serviceWorkerRegistration';
+import reportWebVitals from './utils/reportWebVitals';
 
-import swDev from './swDev';
+import swDev from './utils/swDev';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -13,39 +11,63 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
+import {  useState } from "react";
+import axiosInstance from '../utils/axios';
+import Alert from '@mui/material/Alert';
 
-function Copyright(props) {
 
-// how to make an get fetch request?  
+
+const theme = createTheme();
+ 
+function LoginScreen() {
+  const [error,setError]=useState();
+  const navigate = useNavigate();
+
+	const initialFormData = Object.freeze({
+		email: '',
+		password: '',
+	});
+
+	const [formData, updateFormData] = useState(initialFormData);
+
+	const handleChange = (e) => {
+		updateFormData({
+			...formData,
+			[e.target.name]: e.target.value.trim(),
+		});
+	};
 
 
   
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
-const theme = createTheme();
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log(formData);
 
-function LoginScreen() {
+		axiosInstance
+			.post(`token/`, {
+				email: formData.email,
+				password: formData.password,
+			})
+			.then((res) => {
+				localStorage.setItem('access_token', res.data.access);
+				localStorage.setItem('refresh_token', res.data.refresh);
+				axiosInstance.defaults.headers['Authorization'] =
+					'JWT ' + localStorage.getItem('access_token');
+				navigate('/home');
+      
+				//console.log(res);
+				//console.log(res.data);
+			},reason => {
+        console.error(reason); // Error!
+       
+      setError('Invalid Username or Password')});
+      
+      
+	};
 
-  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+ 
 
   return (
     <ThemeProvider theme={theme}>
@@ -89,6 +111,7 @@ function LoginScreen() {
                 id="email"
                 label="Email Address"
                 name="email"
+                onChange={handleChange}
                 autoComplete="email"
                 autoFocus
               />
@@ -101,20 +124,19 @@ function LoginScreen() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={handleChange}
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
+           
               <Button
                 type="submit"
                 fullWidth
-                onClick={() => navigate('/home')}
+                onClick={handleSubmit}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
                 Sign In
               </Button>
+              {error?<Alert severity="error">{error}</Alert>:null} 
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
@@ -127,7 +149,7 @@ function LoginScreen() {
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
+          
             </Box>
           </Box>
         </Grid>

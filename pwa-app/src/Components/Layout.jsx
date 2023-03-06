@@ -113,7 +113,7 @@ const Layout = () => {
             </Typography>
             <IconButton 
               color="inherit"
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/logout')}
               >
               {/* <Badge badgeContent={4} color="secondary"> */}
                 <LogoutIcon

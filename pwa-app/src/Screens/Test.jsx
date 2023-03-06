@@ -1,34 +1,30 @@
 import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-
-
+import {  useEffect,useState } from "react";
+import PostLoadingComponent from '../Components/PostLoading';
+import Posts from '../Components/JobPosts';
+import axiosInstance from '../utils/axios';
 
 // 
 
 export default function StickyFooter() {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-      }}
-    >
-      <CssBaseline />
-      <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="sm">
-        <Typography variant="h2" component="h1" gutterBottom>
-          Sticky footer
-        </Typography>
-        <Typography variant="h5" component="h2" gutterBottom>
-          {'Pin a footer to the bottom of the viewport.'}
-          {'The footer will move as the main element of the page grows.'}
-        </Typography>
-        <Typography variant="body1">Sticky footer placeholder.</Typography>
-      </Container>
-     
-    </Box>
-  );
+  const PostLoading = PostLoadingComponent(Posts);
+	const [appState, setAppState] = useState({
+		loading: false,
+		posts: null,
+	});
+
+	useEffect(() => {
+		axiosInstance.get().then((res) => {
+			const allPosts = res.data;
+			setAppState({ loading: false, posts: allPosts });
+			console.log(res.data);
+		});
+
+	}, [setAppState]);
+	return (
+		<div className="App">
+			<h1>Latest Posts</h1>
+			<PostLoading isLoading={appState.loading} posts={appState.posts} />
+		</div>
+	);
 }
