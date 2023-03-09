@@ -1,11 +1,12 @@
-import LoginScreen from './Screens/Login'
-import SignUpScreen from './Screens/SignUp'
+import LoginScreen from './Screens/login'
+import SignUpScreen from './Screens/signUp'
 import { Routes, Route } from 'react-router-dom';
-import Layout from './Components/Layout';
-import Test from './Screens/Test'
-import Test2 from './Screens/Test2'
-import Logout from './Screens/Logout';
-
+import Layout from './Components/layout';
+import Test from './Screens/home'
+import Logout from './Screens/logout';
+import DetailScreen from './Components/detailScreen';
+import Create from './admin/create';
+import Edit from './admin/edit';
 
 function App() {
  
@@ -19,7 +20,9 @@ function App() {
 
         <Route element={<Layout />}>
           <Route path="/home" element={<Test />} />
-          <Route path="/test" element={<Test2 />} />
+          <Route path="/post/:slug" element={<DetailScreen />} />
+          <Route path="/admin/create" element={<Create />} />
+          <Route path="/admin/edit/:id" element={<Edit />} />
         ... other routes with layout ...
        </Route>
        

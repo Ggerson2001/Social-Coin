@@ -11,7 +11,6 @@ import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 
 
-// const navigate = useNavigate();
 export const mainListItems = (
   <React.Fragment>
     <ListItemButton>
@@ -56,7 +55,7 @@ export const secondaryListItems = (
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Current month"   />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
