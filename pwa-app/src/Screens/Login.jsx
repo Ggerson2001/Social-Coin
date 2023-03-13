@@ -42,21 +42,22 @@ function LoginScreen() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(formData);
+		
 
 		axiosInstance
-			.post(`token/`, {
+			.post(`user/login/`, {
 				email: formData.email,
 				password: formData.password,
 			})
 			.then((res) => {
 				localStorage.setItem('access_token', res.data.access);
 				localStorage.setItem('refresh_token', res.data.refresh);
+        localStorage.setItem('role',res.data.role);
 				axiosInstance.defaults.headers['Authorization'] =
 					'JWT ' + localStorage.getItem('access_token');
 				navigate('/home');
       
-				//console.log(res);
+				console.log(res);
 				//console.log(res.data);
 			},reason => {
         console.error(reason); // Error!

@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { useNavigate } from "react-router-dom";
-
+// import image from '../assets/job.jpg';
 import axiosInstance from "../utils/axios";
 
 const Posts = (props) => {
@@ -16,24 +16,7 @@ const Posts = (props) => {
   const navigate = useNavigate();
   if (!posts || posts.length === 0) return <p>Can not find any posts, sorry</p>;
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     axiosInstance
-//         .delete('admin/delete/' + id)
-//         .catch(function (error) {
-//             if (error.response) {
-//                 console.log(error.response.data);
-//                 console.log(error.response.status);
-//                 console.log(error.response.headers);
-//             }
-//         })
-//         .then(function () {
-//                 navigate({
-//                     pathname: '/home',
-//                 });
-//                 window.location.reload();
-//         });
-// };
+
 
 function deleteObject (id){
     if (window.confirm('Are you sure you want to delete this post?')) {

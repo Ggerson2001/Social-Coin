@@ -23,20 +23,22 @@ export default function Edit() {
 
 const [formData, updateFormData] = useState(initialFormData);
 
+
 useEffect(() => {
     axiosInstance.get('admin/edit/postdetail/' + id).then((res) => {
         updateFormData({
             ...formData,
-            ['title']: res.data.title,
-            ['description']: res.data.description,
-            ['slug']: res.data.slug,
-            ['place']: res.data.place,
-            ['job_date']: res.data.job_date,
-            ['author']: res.data.author,
-            ['status']: res.data.status,
+            'title': res.data.title,
+            'description': res.data.description,
+            'slug': res.data.slug,
+            'place': res.data.place,
+            'job_date': res.data.job_date,
+            'author': res.data.author,
+            'status': res.data.status,
         });
         console.log(res.data);
     });
+    // eslint-disable-next-line
 }, [updateFormData]);
 
 const handleChange = (e) => {

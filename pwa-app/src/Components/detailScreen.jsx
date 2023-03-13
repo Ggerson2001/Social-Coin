@@ -4,7 +4,8 @@ import Container from '@mui/material/Container';
 import axiosInstance from '../utils/axios';
 import {  useEffect,useState } from "react";
 import { useParams } from "react-router-dom";
-
+import Table from '../Components/table';
+import Button from '@mui/material/Button';
 
 export default function Post() {
     const {slug}=useParams();
@@ -19,18 +20,18 @@ export default function Post() {
 			console.log(res.data);
 		});
        console.log(search)
+       // eslint-disable-next-line
 	}, []);
 
 	return (
-		<Container component="main" maxWidth="md">
+		<Container align="left" >
 			
-			<div ></div>
-			<div >
-				<Container maxWidth="sm">
+		
+				
 					<Typography
 						component="h1"
 						variant="h2"
-						align="center"
+						align="left"
 						color="textPrimary"
 						gutterBottom
 					>
@@ -38,14 +39,41 @@ export default function Post() {
 					</Typography>
 					<Typography
 						variant="h5"
-						align="center"
+						align="left"
 						color="textSecondary"
 						paragraph
 					>
 						{data.description}
 					</Typography>
-				</Container>
-			</div>
+                    <Typography
+						variant="h5"
+						align="left"
+						color="textSecondary"
+						paragraph
+					>
+						Address: {data.place}
+					</Typography>
+                    <Typography
+						variant="h5"
+						align="left"
+						color="textSecondary"
+						paragraph
+					>
+						Posted on :{data.published}
+					</Typography>
+                    <Typography
+						variant="h5"
+						align="left"
+						color="textSecondary"
+						paragraph
+					>
+						Status :{data.status}
+					</Typography>
+                    <Table/>
+                    
+				
+                <Button variant="contained">Transfer Coins</Button>
+		
 		</Container>
 	);
 }

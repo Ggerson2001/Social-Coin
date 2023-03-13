@@ -25,7 +25,9 @@ export default function Create() {
       .replace(/\s+/g, "-") // Replace spaces with -
       .replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
       .replace(/&/g, "-and-") // Replace & with 'and'
+      // eslint-disable-next-line
       .replace(/[^\w\-]+/g, "") // Remove all non-word characters
+      // eslint-disable-next-line
       .replace(/\-\-+/g, "-") // Replace multiple - with single -
       .replace(/^-+/, "") // Trim - from start of text
       .replace(/-+$/, ""); // Trim - from end of text
@@ -43,16 +45,19 @@ export default function Create() {
   const [postimage, setPostImage] = useState(null);
 
   const handleChange = (e) => {
+    // eslint-disable-next-line
       if ([e.target.name] == 'image') {
           setPostImage({
               image: e.target.files,
           });
           console.log(e.target.files);
       }
+      // eslint-disable-next-line
       if ([e.target.name] == 'title') {
           updateFormData({
               ...postData,
               [e.target.name]: e.target.value.trim(),
+              // eslint-disable-next-line
               ['slug']: slugify(e.target.value.trim()),
           });
       } else {
