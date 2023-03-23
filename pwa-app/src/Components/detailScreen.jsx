@@ -6,11 +6,12 @@ import {  useEffect,useState } from "react";
 import { useParams } from "react-router-dom";
 import Table from '../Components/table';
 import Button from '@mui/material/Button';
-
+import { useNavigate } from "react-router-dom";
+import logo from '../assets/minilogo192.png';
 export default function Post() {
     const {slug}=useParams();
 	const search = window.location.search;
-    
+    const navigate = useNavigate();
     
 	const [data, setData] = useState({posts:[]});
 
@@ -69,10 +70,18 @@ export default function Post() {
 					>
 						Status :{data.status}
 					</Typography>
+					<Typography
+						variant="h5"
+						align="left"
+						color="textSecondary"
+						paragraph
+					>
+						Reward :{data.reward} <img src={logo} alt="test" />
+					</Typography>
                     <Table/>
                     
 				
-                <Button variant="contained">Transfer Coins</Button>
+                <Button variant="contained" onClick={() => navigate('/transfer')}>Transfer Coins</Button>
 		
 		</Container>
 	);

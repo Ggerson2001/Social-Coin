@@ -7,6 +7,8 @@ import Logout from './Screens/logout';
 import DetailScreen from './Components/detailScreen';
 import Create from './admin/create';
 import Edit from './admin/edit';
+import Transfer from './Screens/Transfer';
+import MyTransactions from './Screens/MyTransactions';
 
 function App() {
  
@@ -20,6 +22,8 @@ function App() {
 
         <Route element={<Layout />}>
           <Route path="/home" element={<Test />} />
+          <Route path="/transfer" element={<Transfer />} />
+          <Route path="/mytransactions" element={<MyTransactions />} />
           <Route path="/post/:slug" element={<DetailScreen />} />
           <Route path="/admin/create" element={<Create />} />
           <Route path="/admin/edit/:id" element={<Edit />} />

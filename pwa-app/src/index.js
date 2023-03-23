@@ -5,17 +5,20 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 // import * as serviceWorkerRegistration from './utils/serviceWorkerRegistration';
 import reportWebVitals from './utils/reportWebVitals';
+import { TransactionProvider } from './context/TransactionContext'
 
 import swDev from './utils/swDev';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <TransactionProvider>
   <React.StrictMode>
     <BrowserRouter>
     <App />
     </BrowserRouter>
     
   </React.StrictMode>
+  </TransactionProvider>
 );
 
 // If you want your app to work offline and load faster, you can change

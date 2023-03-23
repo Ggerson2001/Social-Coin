@@ -130,11 +130,23 @@ const Layout = () => {
             </Toolbar>
             <Divider />
             <List component="nav">
+            <ListItemButton onClick={() => navigate("/home")}>
+                <ListItemIcon>
+                  <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItemButton>
               <ListItemButton onClick={() => navigate("/admin/create")}>
                 <ListItemIcon>
                   <DashboardIcon />
                 </ListItemIcon>
                 <ListItemText primary="Create" />
+              </ListItemButton>
+              <ListItemButton onClick={() => navigate("/mytransactions")}>
+                <ListItemIcon>
+                  <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="My Transactions" />
               </ListItemButton>
             
               <Divider sx={{ my: 1 }} />

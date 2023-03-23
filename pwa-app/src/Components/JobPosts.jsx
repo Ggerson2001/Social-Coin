@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 import { useNavigate } from "react-router-dom";
 // import image from '../assets/job.jpg';
 import axiosInstance from "../utils/axios";
+import logo from '../assets/minilogo192.png';
 
 const Posts = (props) => {
   const { posts } = props;
@@ -63,6 +64,9 @@ function deleteObject (id){
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {post.description}
+                  </Typography>
+                  <Typography variant="h7" color="text.secondary">
+                    Reward:{post.reward} <img src={logo} alt="test" />
                   </Typography>
                 </CardContent>
                 <CardActions>

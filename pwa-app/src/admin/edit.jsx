@@ -35,6 +35,7 @@ useEffect(() => {
             'job_date': res.data.job_date,
             'author': res.data.author,
             'status': res.data.status,
+            'reward':res.data.reward
         });
         console.log(res.data);
     });
@@ -60,13 +61,14 @@ const handleSubmit = (e) => {
         slug: formData.slug,
         author: 10,
         description: formData.description,
-        status:'undone'
+        status:'undone',
+        reward:formData.reward
         
     });
     navigate({
         pathname: '/home',
     });
-    window.location.reload();
+  
 };
 
 return (
@@ -107,6 +109,20 @@ return (
                         />
                     </Grid>
                     <Grid item xs={12}>
+                    <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="reward"
+                            label="Reward"
+                            name="reward"
+                            value={formData.reward}
+                            onChange={handleChange}
+                            multiline
+                            
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
                         <TextField
                             variant="outlined"
                             required
@@ -114,7 +130,7 @@ return (
                             id="slug"
                             label="slug"
                             name="slug"
-                            autoComplete="slug"
+                            
                             value={formData.slug}
                             onChange={handleChange}
                         />
@@ -127,7 +143,7 @@ return (
                             id="place"
                             label="place"
                             name="place"
-                            autoComplete="content"
+                            
                             value={formData.place}
                             onChange={handleChange}
                             multiline
@@ -135,14 +151,13 @@ return (
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField
+                    <TextField
                             variant="outlined"
                             required
                             fullWidth
                             id="job_date"
-                            label="job_date"
+                            label="Job_date"
                             name="job_date"
-                            autoComplete="date"
                             value={formData.job_date}
                             onChange={handleChange}
                             multiline

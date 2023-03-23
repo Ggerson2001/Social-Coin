@@ -10,6 +10,7 @@ import { useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { integerPropType } from "@mui/utils";
 
 export default function Create() {
   function slugify(string) {
@@ -19,18 +20,20 @@ export default function Create() {
       "aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------";
     const p = new RegExp(a.split("").join("|"), "g");
 
-    return string
-      .toString()
-      .toLowerCase()
-      .replace(/\s+/g, "-") // Replace spaces with -
-      .replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
-      .replace(/&/g, "-and-") // Replace & with 'and'
-      // eslint-disable-next-line
-      .replace(/[^\w\-]+/g, "") // Remove all non-word characters
-      // eslint-disable-next-line
-      .replace(/\-\-+/g, "-") // Replace multiple - with single -
-      .replace(/^-+/, "") // Trim - from start of text
-      .replace(/-+$/, ""); // Trim - from end of text
+    return (
+      string
+        .toString()
+        .toLowerCase()
+        .replace(/\s+/g, "-") // Replace spaces with -
+        .replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
+        .replace(/&/g, "-and-") // Replace & with 'and'
+        // eslint-disable-next-line
+        .replace(/[^\w\-]+/g, "") // Remove all non-word characters
+        // eslint-disable-next-line
+        .replace(/\-\-+/g, "-") // Replace multiple - with single -
+        .replace(/^-+/, "") // Trim - from start of text
+        .replace(/-+$/, "")
+    ); // Trim - from end of text
   }
 
   const navigate = useNavigate();
@@ -39,6 +42,7 @@ export default function Create() {
     place: "",
     slug: "",
     description: "",
+    reward: 0,
   });
 
   const [postData, updateFormData] = useState(initialFormData);
@@ -46,46 +50,45 @@ export default function Create() {
 
   const handleChange = (e) => {
     // eslint-disable-next-line
-      if ([e.target.name] == 'image') {
-          setPostImage({
-              image: e.target.files,
-          });
-          console.log(e.target.files);
-      }
-      // eslint-disable-next-line
-      if ([e.target.name] == 'title') {
-          updateFormData({
-              ...postData,
-              [e.target.name]: e.target.value.trim(),
-              // eslint-disable-next-line
-              ['slug']: slugify(e.target.value.trim()),
-          });
-      } else {
-          updateFormData({
-              ...postData,
-              [e.target.name]: e.target.value.trim(),
-          });
-      }
+    if ([e.target.name] == "image") {
+      setPostImage({
+        image: e.target.files,
+      });
+      console.log(e.target.files);
+    }
+    // eslint-disable-next-line
+    if ([e.target.name] == "title") {
+      updateFormData({
+        ...postData,
+        [e.target.name]: e.target.value.trim(),
+        // eslint-disable-next-line
+        ["slug"]: slugify(e.target.value.trim()),
+      });
+    } else {
+      updateFormData({
+        ...postData,
+        [e.target.name]: e.target.value.trim(),
+      });
+    }
   };
 
   const handleSubmit = (e) => {
-      e.preventDefault();
-      let formData = new FormData();
-      formData.append('title', postData.title);
-      formData.append('slug', postData.slug);
-      formData.append('author', 10);
-      formData.append('description', postData.description);
-      formData.append('place', postData.place);
-      formData.append('job_date','2022-04-03')
-      formData.append('image', postimage.image[0]);
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append("title", postData.title);
+    formData.append("slug", postData.slug);
+    formData.append("author", 10);
+    formData.append("description", postData.description);
+    formData.append("place", postData.place);
+    formData.append("reward", postData.reward);
+    formData.append("job_date", "2022-04-03");
+    formData.append("image", postimage.image[0]);
 
-      axiosInstance.post(`admin/create/`, formData);
-      navigate({
-          pathname: '/home',
-      });
-    //   window.location.reload();
-
-    // console.log(postimage.image[0])
+    axiosInstance.post(`admin/create/`, formData);
+    navigate({
+      pathname: "/home",
+    });
+    
   };
 
   return (
@@ -127,6 +130,18 @@ export default function Create() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                id="outlined-number"
+                label="Reward"
+                type="number"
+                name="reward"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
                 variant="outlined"
                 required
                 fullWidth
@@ -152,6 +167,7 @@ export default function Create() {
                 onChange={handleChange}
               />
             </Grid>
+        
             <Grid item xs={12}>
               <input
                 accept="image/png, image/gif, image/jpeg"
@@ -162,20 +178,17 @@ export default function Create() {
               />
             </Grid>
             <Grid item xs={12}>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-          >
-            Create Post
-          </Button>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+              >
+                Create Post
+              </Button>
             </Grid>
           </Grid>
-
-         
-         
         </form>
       </div>
     </Container>
