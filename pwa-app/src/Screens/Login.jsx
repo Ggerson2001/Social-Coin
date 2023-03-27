@@ -1,78 +1,71 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import {  useState } from "react";
-import axiosInstance from '../utils/axios';
-import Alert from '@mui/material/Alert';
-
-
+import { useState } from "react";
+import axiosInstance from "../utils/axios";
+import Alert from "@mui/material/Alert";
 
 const theme = createTheme();
- 
+
 function LoginScreen() {
-  const [error,setError]=useState();
+  const [error, setError] = useState();
   const navigate = useNavigate();
 
-	const initialFormData = Object.freeze({
-		email: '',
-		password: '',
-	});
+  const initialFormData = Object.freeze({
+    email: "",
+    password: "",
+  });
 
-	const [formData, updateFormData] = useState(initialFormData);
+  const [formData, updateFormData] = useState(initialFormData);
 
-	const handleChange = (e) => {
-		updateFormData({
-			...formData,
-			[e.target.name]: e.target.value.trim(),
-		});
-	};
+  const handleChange = (e) => {
+    updateFormData({
+      ...formData,
+      [e.target.name]: e.target.value.trim(),
+    });
+  };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  
+    axiosInstance
+      .post(`user/login/`, {
+        email: formData.email,
+        password: formData.password,
+      })
+      .then(
+        (res) => {
+          localStorage.setItem("access_token", res.data.access);
+          localStorage.setItem("refresh_token", res.data.refresh);
+          localStorage.setItem("role", res.data.role);
+          axiosInstance.defaults.headers["Authorization"] =
+            "JWT " + localStorage.getItem("access_token");
+          navigate("/home");
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		
+          console.log(res);
+          //console.log(res.data);
+        },
+        (reason) => {
+          console.error(reason); // Error!
 
-		axiosInstance
-			.post(`user/login/`, {
-				email: formData.email,
-				password: formData.password,
-			})
-			.then((res) => {
-				localStorage.setItem('access_token', res.data.access);
-				localStorage.setItem('refresh_token', res.data.refresh);
-        localStorage.setItem('role',res.data.role);
-				axiosInstance.defaults.headers['Authorization'] =
-					'JWT ' + localStorage.getItem('access_token');
-				navigate('/home');
-      
-				console.log(res);
-				//console.log(res.data);
-			},reason => {
-        console.error(reason); // Error!
-       
-      setError('Invalid Username or Password')});
-      
-      
-	};
-
-
- 
+          setError("Invalid Username or Password");
+        }
+      );
+  };
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
           item
@@ -80,12 +73,14 @@ function LoginScreen() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random)',
-            backgroundRepeat: 'no-repeat',
+            backgroundImage: "url(https://source.unsplash.com/random)",
+            backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -93,18 +88,23 @@ function LoginScreen() {
             sx={{
               my: 8,
               mx: 4,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 1 }}
+            >
               <TextField
                 margin="normal"
                 required
@@ -127,7 +127,7 @@ function LoginScreen() {
                 autoComplete="current-password"
                 onChange={handleChange}
               />
-           
+
               <Button
                 type="submit"
                 fullWidth
@@ -137,20 +137,14 @@ function LoginScreen() {
               >
                 Sign In
               </Button>
-              {error?<Alert severity="error">{error}</Alert>:null} 
+              {error ? <Alert severity="error">{error}</Alert> : null}
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>
-                <Grid item>
-                  <Link href="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
               </Grid>
-          
             </Box>
           </Box>
         </Grid>
@@ -159,5 +153,4 @@ function LoginScreen() {
   );
 }
 
-export default LoginScreen
-
+export default LoginScreen;

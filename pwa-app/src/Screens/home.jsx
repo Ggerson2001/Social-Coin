@@ -13,8 +13,6 @@ export default function StickyFooter() {
     posts: null,
   });
 
-  
-
   useEffect(() => {
     axiosInstance.get().then((res) => {
       const allPosts = res.data;
@@ -26,7 +24,6 @@ export default function StickyFooter() {
     <div className="App">
       <h1>Latest Posts</h1>
       <PostLoading isLoading={appState.loading} posts={appState.posts} />
-    
     </div>
   );
 }
