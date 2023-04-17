@@ -11,43 +11,67 @@ import logo from "../assets/minilogo192.png";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-
 import List from "@mui/material/List";
-
 import Grid from "@mui/material/Grid";
-
 import QrCode from "./qrCode";
-import Verification from "../Screens/verification";
 
 
 export default function Post() {
   const { slug } = useParams();
-  const search = window.location.search;
+
   const navigate = useNavigate();
+  const jobSlug = window.location.pathname.split("/").pop();
+  const userId = localStorage.getItem("id");
 
   const [data, setData] = useState({ posts: [] });
+  const [jobId, setJobId] = useState(0);
+
   const role = localStorage.getItem("role");
 
   useEffect(() => {
     axiosInstance.get("post/" + slug).then((res) => {
       setData(res.data);
-      console.log(role);
+      setJobId(res.data.id);
     });
-    console.log(search);
+
+   
+
     // eslint-disable-next-line
   }, []);
 
-
   const formatDate = (dateString) => {
     const options = {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
     };
-    return new Date(dateString).toLocaleString('en-US', options);
+    return new Date(dateString).toLocaleString("en-US", options);
+  };
+
+  const initialFormData = {
+    author: userId,
+    job_post: jobId,
+  };
+
+
+
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append("author", initialFormData.author);
+    formData.append("job_post", initialFormData.job_post);
+
+    axiosInstance.post(`create-job-verification/${jobSlug}/`, formData);
+
+    console.log(formData);
+    navigate({
+      pathname: "/home",
+    });
   };
 
   return (
@@ -141,7 +165,14 @@ export default function Post() {
 
       {role === "client" ? (
         <div>
-          <Verification />
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+          >
+            Verify Job
+          </Button>
         </div>
       ) : (
         <p></p>

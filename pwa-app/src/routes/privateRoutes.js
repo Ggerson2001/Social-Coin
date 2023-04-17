@@ -9,10 +9,10 @@ const PrivateRoutes = () => {
 
     if (token && role === 'admin' ) {
         return <Outlet />
-    // } else if (token && role === 'service') {
-    //     // render different set of routes for regular users
-    //     return <ServiceUserRoutes />
-    // } 
+    } else if (token && role === 'service') {
+        // render different set of routes for regular users
+        return <Outlet />
+     
     }else if(token && role === 'client' ){
         return <Outlet />
     }
