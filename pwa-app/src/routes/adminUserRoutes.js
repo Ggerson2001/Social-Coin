@@ -8,7 +8,10 @@ const AdminUserRoutes = () => {
     <Routes>
       <Route path="/transfer" element={<Transfer />} />
       <Route path="/mytransactions" element={<MyTransactions />} />
-      
+      <Route path="/home" element={<Test />} />
+      <Route path="/post/:slug" element={<DetailScreen />} />
+      <Route path="/admin/create" element={<Create />} />
+      <Route path="/admin/edit/:id" element={<Edit />} />
     </Routes>
   );
 };

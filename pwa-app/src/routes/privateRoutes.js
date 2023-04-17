@@ -1,6 +1,5 @@
 import { Outlet, Navigate } from 'react-router-dom';
-import AdminUserRoutes from './adminUserRoutes';
-import ServiceUserRoutes from './serviceUserRoutes';
+
 
 
 const PrivateRoutes = () => {
