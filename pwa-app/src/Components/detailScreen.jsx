@@ -9,6 +9,9 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/minilogo192.png";
 
+import QrCode from "./qrCode";
+import Verification from "../Screens/verification";
+
 export default function Post() {
   const { slug } = useParams();
   const search = window.location.search;
@@ -59,6 +62,22 @@ export default function Post() {
           <Button variant="contained" onClick={() => navigate("/transfer")}>
             Transfer Coins
           </Button>
+        </div>
+      ) : (
+        <p></p>
+      )}
+
+      {role === "service" ? (
+        <div>
+          <QrCode />
+        </div>
+      ) : (
+        <p></p>
+      )}
+
+      {role === "client" ? (
+        <div>
+          <Verification />
         </div>
       ) : (
         <p></p>

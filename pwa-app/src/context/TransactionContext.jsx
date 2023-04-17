@@ -8,9 +8,16 @@ export const TransactionContext = React.createContext();
 
 const { ethereum } = window;
 
-const createEthereumContract = () => {
+const EthereumContract = () => {
+  // A Web3Provider wraps a standard Web3 provider, which is
+  // what MetaMask injects as window.ethereum into each page
   const provider = new ethers.providers.Web3Provider(ethereum);
+
+  // The MetaMask plugin also allows signing transactions to
+  // send ether and pay to change state within the blockchain.
+  // For this, you need the account signer...
   const signer = provider.getSigner();
+
   const transactionsContract = new ethers.Contract(
     contractAddress,
     contractAbi,
@@ -36,6 +43,8 @@ export const TransactionProvider = ({ children }) => {
   );
   const [transactions, setTransactions] = useState([]);
 
+  const [balance, setBalance] = useState();
+
   const handleChange = (e, name) => {
     setFormData((prevState) => ({ ...prevState, [name]: e.target.value }));
   };
@@ -43,7 +52,7 @@ export const TransactionProvider = ({ children }) => {
   const getAllTransactions = async () => {
     try {
       if (ethereum) {
-        const transactionsContract = createEthereumContract();
+        const transactionsContract = EthereumContract();
 
         const availableTransactions =
           await transactionsContract.getAllTransactions();
@@ -110,7 +119,7 @@ export const TransactionProvider = ({ children }) => {
   const checkIfTransactionsExists = async () => {
     try {
       if (ethereum) {
-        const transactionsContract = createEthereumContract();
+        const transactionsContract = EthereumContract();
         const currentTransactionCount =
           await transactionsContract.getTransactionCount();
 
@@ -126,12 +135,29 @@ export const TransactionProvider = ({ children }) => {
     }
   };
 
+  const getAddressBalance = async (address) => {
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const balance = await provider.getBalance(address);
+
+    if (balance) {
+      setBalance(ethers.utils.formatEther(balance));
+    }
+    console.log(`Balance: ${ethers.utils.formatEther(balance)} ether`);
+  };
+
+  const getBalance = async () => {
+    const accounts = await ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    getAddressBalance(accounts[0]);
+  };
+
   const sendTransaction = async () => {
     try {
       if (!ethereum) return alert("PLease install metamask");
 
       const { addressTo, amount, keyword, message } = formData;
-      const transactionsContract = createEthereumContract();
+      const transactionsContract = EthereumContract();
       const parsedAmount = ethers.utils.parseEther(amount);
 
       console.log(parsedAmount);
@@ -170,7 +196,7 @@ export const TransactionProvider = ({ children }) => {
         window.location.reload();
       }, 2000);
 
-      console.log(transactionCount);
+      // console.log(transactionCount);
     } catch (error) {
       console.log(error);
     }
@@ -179,6 +205,7 @@ export const TransactionProvider = ({ children }) => {
   useEffect(() => {
     checkIfWalletIsConnected();
     checkIfTransactionsExists();
+    getBalance();
     // eslint-disable-next-line
   }, []);
 
@@ -195,6 +222,7 @@ export const TransactionProvider = ({ children }) => {
         handleChange,
         isLoading,
         isSuccess,
+        balance,
       }}
     >
       {children}

@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axiosInstance from "../utils/axios";
 import Alert from "@mui/material/Alert";
+import image from "../assets/socialCoin.jpg";
 
 const theme = createTheme();
 
@@ -73,7 +74,7 @@ function LoginScreen() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
+            backgroundImage: `url(${image})`,
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"

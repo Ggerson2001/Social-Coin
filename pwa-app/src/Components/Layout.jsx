@@ -74,6 +74,7 @@ const Layout = () => {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const role = localStorage.getItem("role");
 
   const navigate = useNavigate();
   return (
@@ -136,18 +137,33 @@ const Layout = () => {
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItemButton>
+
+              {/* {role === "service" ? (
+                <div> */}
               <ListItemButton onClick={() => navigate("/admin/create")}>
                 <ListItemIcon>
                   <DashboardIcon />
                 </ListItemIcon>
-                <ListItemText primary="Create" />
+                <ListItemText primary="New Post" />
               </ListItemButton>
-              <ListItemButton onClick={() => navigate("/mytransactions")}>
-                <ListItemIcon>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="My Transactions" />
-              </ListItemButton>
+                  {/* </div>
+                  ) : (
+                     <p></p>
+                   )} */}
+     
+
+              {role === "admin" || role === "client"? (
+                <div>
+                  <ListItemButton onClick={() => navigate("/mytransactions")}>
+                    <ListItemIcon>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="My Transactions" />
+                  </ListItemButton>
+                </div>
+             ) : (
+                <p></p>
+              )}
 
               <Divider sx={{ my: 1 }} />
               {/* {secondaryListItems} */}

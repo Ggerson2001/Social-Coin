@@ -29,6 +29,7 @@ const Transfer = () => {
     sendTransaction,
     isLoading,
     isSuccess,
+    balance
   } = useContext(TransactionContext);
   let template;
 
@@ -37,6 +38,7 @@ const Transfer = () => {
       <Button variant="contained" onClick={connectWallet}>
         Connect Wallet
       </Button>
+     
     );
   } else {
     template = <Typography>Wallet is connected</Typography>;
@@ -55,7 +57,7 @@ const Transfer = () => {
   return (
     <div>
       {template}
-
+      <Typography>Balance: {balance}</Typography>
       <Container component="main" maxWidth="sm">
         <div>
           <Typography component="h1" variant="h5">
