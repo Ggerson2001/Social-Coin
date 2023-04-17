@@ -23,7 +23,11 @@ export default function StickyFooter() {
   return (
     <div className="App">
       <h1>Latest Posts</h1>
+      <div>
       <PostLoading isLoading={appState.loading} posts={appState.posts} />
+
+      </div>
+      
     </div>
   );
 }

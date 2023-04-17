@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
-// import image from '../assets/job.jpg';
+import DeleteIcon from "@mui/icons-material/Delete";
 import axiosInstance from "../utils/axios";
 import logo from "../assets/minilogo192.png";
 
@@ -66,7 +66,7 @@ const Posts = (props) => {
                     Reward:{post.reward} <img src={logo} alt="test" />
                   </Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions sx={{ justifyContent: "space-between" }}>
                   <Button
                     size="small"
                     onClick={() => navigate("/post/" + post.slug)}
@@ -79,8 +79,12 @@ const Posts = (props) => {
                   >
                     Edit
                   </Button>
-                  <Button size="small" onClick={() => deleteObject(post.id)}>
-                    Delete
+                  <Button
+                    size="small"
+                    onClick={() => deleteObject(post.id)}
+                    sx={{ color: "error.main" }}
+                  >
+                    <DeleteIcon />
                   </Button>
                 </CardActions>
               </Card>
@@ -91,4 +95,5 @@ const Posts = (props) => {
     </Container>
   );
 };
+
 export default Posts;
