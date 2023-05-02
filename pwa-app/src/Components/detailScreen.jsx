@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import axiosInstance from "../utils/axios";
@@ -14,9 +14,12 @@ import CardContent from "@mui/material/CardContent";
 import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import QrCode from "./qrCode";
-
+import { TransactionContext } from "../context/TransactionContext";
 
 export default function Post() {
+
+  const {verifyJob
+  } = useContext(TransactionContext);
   const { slug } = useParams();
 
   const navigate = useNavigate();
@@ -66,13 +69,25 @@ export default function Post() {
     formData.append("author", initialFormData.author);
     formData.append("job_post", initialFormData.job_post);
 
+
     axiosInstance.post(`create-job-verification/${jobSlug}/`, formData);
+
 
     console.log(formData);
     navigate({
       pathname: "/home",
     });
   };
+
+
+  const handleVerification = (e) => {
+    e.preventDefault();
+    
+    verifyJob('0xAF36996A59B4749aAaA5211B495b2de686A09933',initialFormData.job_post);
+
+  };
+
+
 
   return (
     <Container align="left">
@@ -144,12 +159,22 @@ export default function Post() {
       {role === "admin" ? (
         <div>
           <Typography gutterBottom variant="h5" component="div">
-            Job verified from
+            Job completed from
           </Typography>
           <Table />
+
+          <Button variant="contained" onClick={handleVerification}>
+            Verify Job to Blockchain
+          </Button>
+
+          &nbsp;&nbsp;&nbsp;&nbsp;
+
           <Button variant="contained" onClick={() => navigate("/transfer")}>
             Transfer Coins
           </Button>
+
+
+        
         </div>
       ) : (
         <p></p>

@@ -84,7 +84,10 @@ export default function Create() {
     formData.append("job_date", "2022-04-03");
     formData.append("image", postimage.image[0]);
 
-    axiosInstance.post(`admin/create/`, formData);
+    axiosInstance.post(`admin/create/`, formData)
+    .then((res) => {
+      console.log(res.data.id);
+    });;
     navigate({
       pathname: "/home",
     });
@@ -145,7 +148,7 @@ export default function Create() {
                 variant="outlined"
                 required
                 fullWidth
-                id="description"
+                id="description-one"
                 label="Description"
                 name="description"
                 autoComplete="description"

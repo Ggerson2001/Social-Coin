@@ -152,6 +152,16 @@ export const TransactionProvider = ({ children }) => {
     getAddressBalance(accounts[0]);
   };
 
+
+
+
+
+  const verifyJob=async(address,jobId)=>{
+    const transactionsContract = EthereumContract();
+
+    transactionsContract.verifyJob(address,jobId);
+
+  }
   const sendTransaction = async () => {
     try {
       if (!ethereum) return alert("PLease install metamask");
@@ -223,6 +233,7 @@ export const TransactionProvider = ({ children }) => {
         isLoading,
         isSuccess,
         balance,
+        verifyJob
       }}
     >
       {children}

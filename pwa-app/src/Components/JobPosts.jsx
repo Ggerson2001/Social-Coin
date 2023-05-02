@@ -47,7 +47,7 @@ const Posts = (props) => {
         {posts.map((post) => {
           return (
             // Enterprise card is full width at sm breakpoint
-            <Grid item key={post.id} xs={12} md={4}>
+            <Grid item key={post.id} xs={12} md={4} data-testid="post">
               <Card key={post.id} sx={{ maxWidth: 345 }}>
                 <CardMedia
                   component="img"
@@ -70,12 +70,14 @@ const Posts = (props) => {
                   <Button
                     size="small"
                     onClick={() => navigate("/post/" + post.slug)}
+                    data-testid="view-post"
                   >
                     View
                   </Button>
                   <Button
                     size="small"
                     onClick={() => navigate("/admin/edit/" + post.id)}
+                    data-testid="edit-post"
                   >
                     Edit
                   </Button>
@@ -83,6 +85,7 @@ const Posts = (props) => {
                     size="small"
                     onClick={() => deleteObject(post.id)}
                     sx={{ color: "error.main" }}
+                    data-testid="delete-post"
                   >
                     <DeleteIcon />
                   </Button>
