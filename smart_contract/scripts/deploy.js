@@ -4,7 +4,7 @@ const main = async () => {
 
   await transactionsContract.deployed();
 
-  console.log("Jobverification address: ", transactionsContract.address);
+  console.log("Transaction address: ", transactionsContract.address);
 };
 
 const runMain = async () => {

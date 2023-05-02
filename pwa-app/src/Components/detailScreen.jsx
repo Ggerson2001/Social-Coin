@@ -35,6 +35,7 @@ export default function Post() {
     axiosInstance.get("post/" + slug).then((res) => {
       setData(res.data);
       setJobId(res.data.id);
+      console.log(res.data.id);
     });
 
    
@@ -83,7 +84,7 @@ export default function Post() {
   const handleVerification = (e) => {
     e.preventDefault();
     
-    verifyJob('0xAF36996A59B4749aAaA5211B495b2de686A09933',initialFormData.job_post);
+    verifyJob('0xAF36996A59B4749aAaA5211B495b2de686A09933','0xa7303668114Df7b252c472700E811730E213bfB8',jobId);
 
   };
 

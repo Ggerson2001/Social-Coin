@@ -42,6 +42,7 @@ export const TransactionProvider = ({ children }) => {
     localStorage.getItem("transactionCount")
   );
   const [transactions, setTransactions] = useState([]);
+  const [verifications, setVerifications] = useState([]);
 
   const [balance, setBalance] = useState();
 
@@ -90,6 +91,8 @@ export const TransactionProvider = ({ children }) => {
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
         getAllTransactions();
+        getAllJobVerification();
+        console.log(verifications);
       } else {
         console.log("No accounts found");
       }
@@ -156,12 +159,44 @@ export const TransactionProvider = ({ children }) => {
 
 
 
-  const verifyJob=async(address,jobId)=>{
+  const verifyJob=async(lg,client,jobId)=>{
     const transactionsContract = EthereumContract();
 
-    transactionsContract.verifyJob(address,jobId);
+    transactionsContract.verifyJob(lg,client,jobId);
 
   }
+
+
+  const getAllJobVerification = async () => {
+    try {
+      if (ethereum) {
+        const transactionsContract = EthereumContract();
+
+        const jobsVerified =
+          await transactionsContract.getAllJobVerifications();
+
+        const structuredVerification = jobsVerified.map(
+          (verification) => ({
+            lg: verification.lg,
+            client: verification.client,
+            jobId: verification.jobId
+          })
+        );
+
+        console.log(structuredVerification);
+
+        setVerifications(structuredVerification);
+      } else {
+        console.log("Ethereum is not present");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+
   const sendTransaction = async () => {
     try {
       if (!ethereum) return alert("PLease install metamask");
@@ -190,6 +225,8 @@ export const TransactionProvider = ({ children }) => {
         message,
         keyword
       );
+
+      console.log(verifications);
 
       setIsLoading(true);
       console.log(`Loading - ${transactionHash.hash}`);
@@ -233,7 +270,9 @@ export const TransactionProvider = ({ children }) => {
         isLoading,
         isSuccess,
         balance,
-        verifyJob
+        verifyJob,
+        verifications
+        
       }}
     >
       {children}

@@ -12,6 +12,7 @@ export default function BasicTable() {
   const [rows, setRows] = useState([]);
   const jobSlug = window.location.pathname.split('/').pop(); 
   const [userName, setUserName] = useState();
+  const [metaAddress,setMetaAddress]=useState();
 
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export default function BasicTable() {
       }));
       setRows(formattedRows);
       setUserName(formattedRows[0].author_name);
+      setMetaAddress(formattedRows[0].author_address)
       
       
     });
@@ -35,13 +37,14 @@ export default function BasicTable() {
  
 
   return (
-    <TableContainer component={Paper} sx={{ width: "40%" }}>
+    <TableContainer component={Paper} sx={{ width: "80%" }}>
       <Table sx={{ minWidth: 350 }} aria-label="simple table">
         <TableHead>
-          <TableRow>
+          
             <TableCell>Username</TableCell>
             <TableCell align="right">Date</TableCell>
-          </TableRow>
+            <TableCell align="right">MetaMask Address</TableCell>
+          
         </TableHead>
         <TableBody>
           {rows.map((row) => (
@@ -53,6 +56,7 @@ export default function BasicTable() {
                 {userName}
               </TableCell>
               <TableCell align="right">{row.time_created}</TableCell>
+              <TableCell align="right">{metaAddress}</TableCell>
             </TableRow>
           ))}
         </TableBody>

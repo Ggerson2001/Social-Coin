@@ -10,15 +10,21 @@ class JobPostSerializer(serializers.ModelSerializer):
 
 class JobVerificationSerializer(serializers.ModelSerializer):
     author_name = serializers.SerializerMethodField()
+    author_address=serializers.SerializerMethodField()
     
     def get_author_name(self, obj):
         author_id = obj.author.id
         author = NewUser.objects.get(id=author_id)
         return author.user_name
+    
+    def get_author_address(self, obj):
+        author_id = obj.author.id
+        author = NewUser.objects.get(id=author_id)
+        return author.meta_address
 
     class Meta:
         model = JobVerification
-        fields = ['id', 'author', 'author_name', 'job_post', 'time_created']
+        fields = ['id', 'author', 'author_name', 'job_post', 'time_created','author_address']
 
 # class BentoSerializer(serializers.ModelSerializer):
 #     zones = serializers.SerializerMethodField()

@@ -9,12 +9,12 @@ from django.db import models
 class UserAdminConfig(UserAdmin):
     model = NewUser
     search_fields = ('email', 'user_name', 'first_name',)
-    list_filter = ('email', 'user_name', 'first_name','password', 'is_active', 'is_staff','role')
+    list_filter = ('email', 'user_name', 'first_name','password', 'is_active', 'is_staff','role','meta_address')
     ordering = ('-start_date',)
     list_display = ('email','id', 'user_name', 'first_name',
-                    'is_active', 'is_staff','role')
+                    'is_active', 'is_staff','role','meta_address')
     fieldsets = (
-        (None, {'fields': ('email', 'user_name', 'first_name','role')}),
+        (None, {'fields': ('email', 'user_name', 'first_name','role','meta_address')}),
         ('Permissions', {'fields': ('is_staff', 'is_active')}),
         ('Personal', {'fields': ('about',)}),
     )
@@ -24,7 +24,7 @@ class UserAdminConfig(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'user_name', 'first_name', 'password1', 'password2', 'is_active', 'is_staff','role')}
+            'fields': ('email', 'user_name', 'first_name', 'password1', 'password2', 'is_active', 'is_staff','role','meta_address')}
          ),
     )
 
