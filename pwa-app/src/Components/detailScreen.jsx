@@ -14,13 +14,14 @@ import CardContent from "@mui/material/CardContent";
 import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import QrCode from "./qrCode";
+import MyModal from "./modal";
 import { TransactionContext } from "../context/TransactionContext";
 
 export default function Post() {
-
-  const {verifyJob
-  } = useContext(TransactionContext);
+  const { verifyJob } = useContext(TransactionContext);
   const { slug } = useParams();
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({ type: "", message: "" });
 
   const navigate = useNavigate();
   const jobSlug = window.location.pathname.split("/").pop();
@@ -28,6 +29,8 @@ export default function Post() {
 
   const [data, setData] = useState({ posts: [] });
   const [jobId, setJobId] = useState(0);
+  const [metaAddress, setMetaAddress] = useState();
+  const [published, setPublished] = useState();
 
   const role = localStorage.getItem("role");
 
@@ -35,10 +38,18 @@ export default function Post() {
     axiosInstance.get("post/" + slug).then((res) => {
       setData(res.data);
       setJobId(res.data.id);
-      console.log(res.data.id);
+      setPublished(res.data.published);
+      console.log("dataaaaaaa", data);
     });
 
-   
+    axiosInstance.get(`job-verification/${jobSlug}/`).then((res) => {
+      const formattedRows = res.data.map((row) => ({
+        ...row,
+        time_created: new Date(row.time_created).toLocaleDateString("en-GB"),
+      }));
+
+      setMetaAddress(formattedRows[0].author_address);
+    });
 
     // eslint-disable-next-line
   }, []);
@@ -60,9 +71,14 @@ export default function Post() {
     job_post: jobId,
   };
 
+  const openModal = (type) => {
+    setModalContent({ type, message: "Job is verified in blockchain" });
+    setIsOpen(true);
+  };
 
-
-
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,9 +86,7 @@ export default function Post() {
     formData.append("author", initialFormData.author);
     formData.append("job_post", initialFormData.job_post);
 
-
     axiosInstance.post(`create-job-verification/${jobSlug}/`, formData);
-
 
     console.log(formData);
     navigate({
@@ -80,15 +94,27 @@ export default function Post() {
     });
   };
 
+  const handleUpdate = () => {
+    console.log(jobId);
 
-  const handleVerification = (e) => {
-    e.preventDefault();
-    
-    verifyJob('0xAF36996A59B4749aAaA5211B495b2de686A09933','0xa7303668114Df7b252c472700E811730E213bfB8',jobId);
+    axiosInstance.patch(`admin/edit/${jobId}/`, {
+      status: "done",
+      slug: slug,
+      published: published,
+    });
 
+    window.location.reload();
   };
 
+  const verifyUpdate = () => {
+    handleVerification();
+    handleUpdate();
+    openModal("success");
+  };
 
+  const handleVerification = () => {
+    verifyJob("0xAF36996A59B4749aAaA5211B495b2de686A09933", metaAddress, jobId);
+  };
 
   return (
     <Container align="left">
@@ -109,9 +135,13 @@ export default function Post() {
                 <Typography variant="body2" color="text.primary">
                   Posted on :{formatDate(data.published)}
                 </Typography>
-                <Typography variant="body2" color="text.primary">
-                  Status :{data.status}
+                <Typography
+                  variant="body2"
+                  color={data.status === "done" ? "green" : "red"}
+                >
+                  Status: {data.status}
                 </Typography>
+
                 <Typography variant="body2" color="text.primary">
                   Reward :{data.reward} <img src={logo} alt="test" />
                 </Typography>
@@ -130,6 +160,21 @@ export default function Post() {
                         functioning Java program, given a certain specification.
                       </ListItem> */}
               </List>
+
+              <Button
+                variant="contained"
+                onClick={() => verifyUpdate()}
+                disabled={data.status === "done"}
+              >
+                Verify job to blockchain
+              </Button>
+
+              <MyModal
+                isOpen={modalIsOpen}
+                closeModal={closeModal}
+                type={modalContent.type}
+                message={modalContent.message}
+              />
               <Grid
                 container
                 spacing={{ xs: 2, md: 2 }}
@@ -163,19 +208,13 @@ export default function Post() {
             Job completed from
           </Typography>
           <Table />
-
-          <Button variant="contained" onClick={handleVerification}>
-            Verify Job to Blockchain
-          </Button>
-
-          &nbsp;&nbsp;&nbsp;&nbsp;
-
-          <Button variant="contained" onClick={() => navigate("/transfer")}>
+          &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+          <Button
+            variant="contained"
+            onClick={() => navigate(`/transfer/${jobSlug}`)}
+          >
             Transfer Coins
           </Button>
-
-
-        
         </div>
       ) : (
         <p></p>

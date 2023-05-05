@@ -130,28 +130,25 @@ const Layout = () => {
             </Toolbar>
             <Divider />
             <List component="nav">
-              <ListItemButton onClick={() => navigate("/home")}>
-                <ListItemIcon>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItemButton>
+              {role === "service" || role === "admin" ? (
+                <div>
+                  <ListItemButton onClick={() => navigate("/home")}>
+                    <ListItemIcon>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Home" />
+                  </ListItemButton>
 
-              {/* {role === "service" ? (
-                <div> */}
-              <ListItemButton onClick={() => navigate("/admin/create")}>
-                <ListItemIcon>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="New Post" />
-              </ListItemButton>
-                  {/* </div>
-                  ) : (
-                     <p></p>
-                   )} */}
-     
+                  <ListItemButton onClick={() => navigate("/admin/create")}>
+                    <ListItemIcon>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="New Post" />
+                  </ListItemButton>
+                </div>
+              ) : null}
 
-              {role === "admin" || role === "client"? (
+              {role === "admin" || role === "client" ? (
                 <div>
                   <ListItemButton onClick={() => navigate("/mytransactions")}>
                     <ListItemIcon>
@@ -159,10 +156,29 @@ const Layout = () => {
                     </ListItemIcon>
                     <ListItemText primary="My Transactions" />
                   </ListItemButton>
+              
                 </div>
-             ) : (
-                <p></p>
-              )}
+              ) : null}
+
+              {role === "admin" ? (
+                
+                  <ListItemButton onClick={() => navigate("/verifiedJobs")}>
+                    <ListItemIcon>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Verified Jobs" />
+                  </ListItemButton>
+              
+              ) : null}
+
+              {role === "client" ? (
+                <ListItemButton onClick={() => navigate("/jobs/verifiedJobs")}>
+                  <ListItemIcon>
+                    <DashboardIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Jobs completed from me" />
+                </ListItemButton>
+              ) : null}
 
               <Divider sx={{ my: 1 }} />
               {/* {secondaryListItems} */}

@@ -1,45 +1,60 @@
-import React, { useContext } from "react";
+import React, { useContext,useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
 import { TransactionContext } from "../context/TransactionContext";
 const columns = [
   { field: "id", headerName: "Transaction ID", width: 140 },
-  { field: "sentAccount", headerName: "From", width: 130 },
-  { field: "receiveAccount", headerName: "To", width: 130 },
+  { field: "lg", headerName: "Verified from", width: 130 },
+  { field: "client", headerName: "Client address", width: 130 },
   {
-    field: "amount",
-    headerName: "Amount (Eth)",
+    field: "jobId",
+    headerName: "JobId",
     width: 120,
   },
-  {
-    field: "timestamp",
-    headerName: "Timestamp",
-    width: 180,
-  },
+
 ];
 
 export const shortenAddress = (address) =>
   `${address.slice(0, 5)}...${address.slice(address.length - 4)}`;
 
 export default function DataTable() {
-  const { transactions, currentAccount } = useContext(TransactionContext);
-  let transactionId = 1;
+  const { verifications } = useContext(TransactionContext);
+  let verificationId = 1;
 
-  console.log(transactions);
-  const rows = transactions
+
+  useEffect(() => {
+    const rows = verifications
     .slice()
     .reverse()
-    .map((transaction) => ({
-      id: transactionId++,
-      sentAccount: shortenAddress(transaction.addressFrom),
-      receiveAccount: shortenAddress(transaction.addressTo),
-      amount: transaction.amount,
-      timestamp: transaction.timestamp,
+    .map((verification) => ({
+      id: verificationId++,
+      lg: verification.lg,
+      client:shortenAddress(verification.client),
+      jobId:verification.jobId,
     }));
+
+    console.log(rows[0].lg)
+    
+  
+    // eslint-disable-next-line
+  }, []);
+  
+  const rows = verifications
+    .slice()
+    .reverse()
+    .map((verification) => ({
+      id: verificationId++,
+      lg: shortenAddress(verification.lg),
+      client:shortenAddress(verification.client),
+      jobId:verification.jobId,
+    }));
+
+
+
 
   return (
     <div style={{ height: 400, width: "100%" }}>
-     <h1>My Transactions</h1>
+     <h1>Verified Jobs</h1>
       <DataGrid
         rows={rows}
         columns={columns}

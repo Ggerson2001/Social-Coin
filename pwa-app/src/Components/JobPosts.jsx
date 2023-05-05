@@ -55,15 +55,26 @@ const Posts = (props) => {
                   image={post.image}
                   alt="job"
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {post.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {post.description}
-                  </Typography>
-                  <Typography variant="h7" color="text.secondary">
-                    Reward:{post.reward} <img src={logo} alt="test" />
+                <CardContent
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div>
+                    <Typography variant="h7" color="text.secondary">
+                      ID: {post.id}
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {post.title}
+                    </Typography>
+
+                    <Typography variant="h7" color="text.secondary">
+                      Reward: {post.reward} <img src={logo} alt="test" />
+                    </Typography>
+                  </div>
+                  <Typography
+                    variant="body3"
+                    color={post.status === "done" ? "green" : "red"}
+                  >
+                    {post.status === "done" ? "Verified" : "Unverified"}
                   </Typography>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "space-between" }}>

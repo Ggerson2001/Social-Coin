@@ -136,7 +136,15 @@ class CreateJobVerification(APIView):
         
 
 
+class VerificationList(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = JobPostSerializer
 
+    def get_queryset(self):
+        user = self.request.user
+        verified_jobs = JobVerification.objects.filter(author=user)
+        job_posts = [job_verification.job_post for job_verification in verified_jobs]
+        return job_posts
         
 
    

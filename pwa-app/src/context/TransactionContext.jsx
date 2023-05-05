@@ -34,6 +34,7 @@ export const TransactionProvider = ({ children }) => {
     amount: "",
     keyword: "",
     message: "",
+    jobId:23
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -42,6 +43,7 @@ export const TransactionProvider = ({ children }) => {
     localStorage.getItem("transactionCount")
   );
   const [transactions, setTransactions] = useState([]);
+
   const [verifications, setVerifications] = useState([]);
 
   const [balance, setBalance] = useState();
@@ -49,6 +51,11 @@ export const TransactionProvider = ({ children }) => {
   const handleChange = (e, name) => {
     setFormData((prevState) => ({ ...prevState, [name]: e.target.value }));
   };
+
+
+
+
+  
 
   const getAllTransactions = async () => {
     try {
@@ -71,7 +78,8 @@ export const TransactionProvider = ({ children }) => {
           })
         );
 
-        console.log(structuredTransactions);
+
+       
 
         setTransactions(structuredTransactions);
       } else {
@@ -81,6 +89,8 @@ export const TransactionProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -92,7 +102,7 @@ export const TransactionProvider = ({ children }) => {
         setCurrentAccount(accounts[0]);
         getAllTransactions();
         getAllJobVerification();
-        console.log(verifications);
+        
       } else {
         console.log("No accounts found");
       }
@@ -183,9 +193,8 @@ export const TransactionProvider = ({ children }) => {
           })
         );
 
-        console.log(structuredVerification);
-
         setVerifications(structuredVerification);
+
       } else {
         console.log("Ethereum is not present");
       }
@@ -201,7 +210,7 @@ export const TransactionProvider = ({ children }) => {
     try {
       if (!ethereum) return alert("PLease install metamask");
 
-      const { addressTo, amount, keyword, message } = formData;
+      const { addressTo, amount, keyword, message,jobId } = formData;
       const transactionsContract = EthereumContract();
       const parsedAmount = ethers.utils.parseEther(amount);
 
@@ -219,12 +228,16 @@ export const TransactionProvider = ({ children }) => {
         ],
       });
 
+      
+
       const transactionHash = await transactionsContract.addToBlockchain(
         addressTo,
         parsedAmount,
         message,
-        keyword
+        keyword,
+        jobId
       );
+      
 
       console.log(verifications);
 
@@ -253,8 +266,15 @@ export const TransactionProvider = ({ children }) => {
     checkIfWalletIsConnected();
     checkIfTransactionsExists();
     getBalance();
+
+    
+  
     // eslint-disable-next-line
   }, []);
+
+  // useEffect(() => {
+  //   console.log("verifications", verifications);
+  // }, [verifications]);
 
   return (
     <TransactionContext.Provider

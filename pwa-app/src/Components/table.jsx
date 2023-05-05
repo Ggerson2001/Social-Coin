@@ -24,6 +24,7 @@ export default function BasicTable() {
       setRows(formattedRows);
       setUserName(formattedRows[0].author_name);
       setMetaAddress(formattedRows[0].author_address)
+      console.log("formattedrows",formattedRows);
       
       
     });
@@ -62,5 +63,8 @@ export default function BasicTable() {
         </TableBody>
       </Table>
     </TableContainer>
+
+         
+
   );
 }

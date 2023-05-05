@@ -13,6 +13,7 @@ contract Transactions {
         string message;
         uint256 timestamp;
         string keyword;
+        uint32 jobId;
     }
 
     struct JobVerification {
@@ -32,22 +33,24 @@ contract Transactions {
         
     }
 
-    function addToBlockchain(address payable receiver, uint amount, string memory message, string memory keyword) public {
-   
-     bool isVerified = false;
+
+    function addToBlockchain(address payable receiver, uint amount, string memory message, string memory keyword, uint32 jobId) public {
+    bool isVerified = false;
     for (uint i = 0; i < verifiedJobs.length; i++) {
-        if (verifiedJobs[i].lg == msg.sender) {
+        if (verifiedJobs[i].lg == msg.sender &&
+            verifiedJobs[i].client == receiver &&
+            verifiedJobs[i].jobId == jobId) {
             isVerified = true;
             break;
         }
     }
     require(isVerified, "Job is not verified");
-        
-        transactionCount += 1;
-        transactions.push(TransferStruct(msg.sender, receiver, amount, message, block.timestamp, keyword));
-        
-        emit Transfer(msg.sender, receiver, amount, message, block.timestamp, keyword);
-    }
+
+    transactionCount += 1;
+    transactions.push(TransferStruct(msg.sender, receiver, amount, message, block.timestamp, keyword,jobId));
+
+    emit Transfer(msg.sender, receiver, amount, message, block.timestamp, keyword);
+}
 
     function getAllTransactions() public view returns (TransferStruct[] memory) {
         return transactions;

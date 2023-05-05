@@ -10,6 +10,8 @@ import PrivateRoutes from "./routes/privateRoutes";
 import DetailScreen from "./Components/detailScreen";
 import Create from "./admin/create";
 import Edit from "./admin/edit";
+import VerifiedJobs from "./Screens/jobVerifications";
+import ClientVerification from "./Screens/clientVerification";
 function App() {
   return (
     <>
@@ -21,8 +23,10 @@ function App() {
         <Route element={<Layout />}>
           <Route element={<PrivateRoutes />}>
             <Route path="/home" element={<Test />} />
-            <Route path="/transfer" element={<Transfer />} />
+            <Route path="/transfer/:slug" element={<Transfer />} />
             <Route path="/mytransactions" element={<MyTransactions />} />
+            <Route path="/verifiedJobs" element={<VerifiedJobs />} />
+            <Route path="/jobs/verifiedJobs" element={<ClientVerification />} />
 
             <Route path="/post/:slug" element={<DetailScreen />} />
             <Route path="/admin/create" element={<Create />} />

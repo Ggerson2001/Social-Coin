@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TransactionContext } from "../context/TransactionContext";
 // import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -8,6 +8,7 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Loader from "../Components/Loader";
 import Alert from "@mui/material/Alert";
+import axiosInstance from "../utils/axios";
 
 const Input = ({ placeholder, name, type, value, handleChange }) => (
   <TextField
@@ -29,16 +30,41 @@ const Transfer = () => {
     sendTransaction,
     isLoading,
     isSuccess,
-    balance
+    balance,
   } = useContext(TransactionContext);
   let template;
+
+  const url = window.location.href;
+  const pathname = new URL(url).pathname;
+  const pathParts = pathname.split("/");
+  const post = pathParts[pathParts.length - 1];
+
+  const [data, setData] = useState([]);
+  const [metaAddress, setMetaAddress] = useState();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const [jobId, setJobId] = useState();
+
+  useEffect(() => {
+    axiosInstance.get(`job-verification/${post}/`).then((res) => {
+      const formattedRows = res.data.map((row) => ({
+        ...row,
+        time_created: new Date(row.time_created).toLocaleDateString("en-GB"),
+      }));
+      setData(formattedRows);
+      setMetaAddress(formattedRows[0].author_address);
+      setJobId(formattedRows[0].job_post);
+      setIsLoaded(true);
+    });
+
+    // eslint-disable-next-line
+  }, []);
 
   if (!currentAccount) {
     template = (
       <Button variant="contained" onClick={connectWallet}>
         Connect Wallet
       </Button>
-     
     );
   } else {
     template = <Typography>Wallet is connected</Typography>;
@@ -50,8 +76,10 @@ const Transfer = () => {
     e.preventDefault();
 
     // if (!addressTo || !amount || !keyword || !message) return;
+    console.log(jobId);
+    sendTransaction(jobId);
 
-    sendTransaction();
+
   };
 
   return (
@@ -63,15 +91,19 @@ const Transfer = () => {
           <Typography component="h1" variant="h5">
             Transfer Coins
           </Typography>
+          {isLoaded && (
           <form noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Input
-                  placeholder="Address To"
-                  name="addressTo"
-                  type="text"
-                  handleChange={handleChange}
-                />
+                
+                  <Input
+                    placeholder="Address To"
+                    name="addressTo"
+                    
+                    type="text"
+                    handleChange={handleChange}
+                  />
+               
               </Grid>
               <Grid item xs={12}>
                 <Input
@@ -114,6 +146,7 @@ const Transfer = () => {
               </div>
             )}
           </form>
+           )}
         </div>
       </Container>
     </div>

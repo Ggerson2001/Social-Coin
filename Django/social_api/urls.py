@@ -1,6 +1,6 @@
 
 from rest_framework.routers import DefaultRouter
-from .views import AdminPostDetail, CreateJobVerification, CreatePost, DeletePost, EditPost, JobVerificationList, PostList, PostDetail, PostListDetailfilter
+from .views import AdminPostDetail, CreateJobVerification, CreatePost, DeletePost, EditPost, JobVerificationList, PostList, PostDetail, PostListDetailfilter,VerificationList
 from django.urls import path
 
 app_name = 'social_api'
@@ -19,5 +19,6 @@ urlpatterns = [
     path('admin/edit/<int:pk>/', EditPost.as_view(), name='editpost'),
     path('admin/delete/<int:pk>/', DeletePost.as_view(), name='deletepost'),
     path('job-verification/<slug:slug>/', JobVerificationList.as_view(), name='job-verification-list'),
-    path('create-job-verification/<slug:slug>/', CreateJobVerification.as_view(), name='create-job-verification')
+    path('create-job-verification/<slug:slug>/', CreateJobVerification.as_view(), name='create-job-verification'),
+    path('jobs/verified/', VerificationList.as_view(), name='verified_job_list')
 ]
