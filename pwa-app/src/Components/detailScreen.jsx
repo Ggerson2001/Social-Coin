@@ -16,17 +16,12 @@ import Grid from "@mui/material/Grid";
 import QrCode from "./qrCode";
 import MyModal from "./modal";
 import { TransactionContext } from "../context/TransactionContext";
-import { ethers } from "ethers";
-import Alert from "@mui/material/Alert";
 
 export default function Post() {
-  const { verifyJob, jobNotVerified, verifications } =
-    useContext(TransactionContext);
+  const { verifyJob } = useContext(TransactionContext);
   const { slug } = useParams();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ type: "", message: "" });
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const navigate = useNavigate();
   const jobSlug = window.location.pathname.split("/").pop();
@@ -36,7 +31,6 @@ export default function Post() {
   const [jobId, setJobId] = useState(0);
   const [metaAddress, setMetaAddress] = useState();
   const [published, setPublished] = useState();
-  let isVerified = false;
 
   const role = localStorage.getItem("role");
 
@@ -112,7 +106,7 @@ export default function Post() {
 
   const verifyUpdate = async () => {
     try {
-      if (metaAddress != undefined) {
+      if (metaAddress !== undefined) {
         await verifyJob(
           "0x9DDac21Af7c85F417D0deF8fDF0515c8432D4431",
           metaAddress,
@@ -169,12 +163,7 @@ export default function Post() {
                     display: "list-item",
                   },
                 }}
-              >
-                {/* <ListItem color="text.secondary">
-                        You are able to create a properly readable and
-                        functioning Java program, given a certain specification.
-                      </ListItem> */}
-              </List>
+              ></List>
 
               {role === "admin" ? (
                 <div>
@@ -216,20 +205,7 @@ export default function Post() {
                   justifyContent: "flex-end",
                   marginRight: "10",
                 }}
-              >
-                {/* <Grid item>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                        //   onClick={(event) =>
-                        //     ()
-                        //   }
-                          sx={{ width: 40 }}
-                        >
-                          Edit
-                        </Button>
-                      </Grid> */}
-              </Grid>
+              ></Grid>
             </Box>
           </Card>
         </Grid>

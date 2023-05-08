@@ -156,19 +156,16 @@ const Layout = () => {
                     </ListItemIcon>
                     <ListItemText primary="My Transactions" />
                   </ListItemButton>
-              
                 </div>
               ) : null}
 
               {role === "admin" ? (
-                
-                  <ListItemButton onClick={() => navigate("/verifiedJobs")}>
-                    <ListItemIcon>
-                      <DashboardIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Verified Jobs" />
-                  </ListItemButton>
-              
+                <ListItemButton onClick={() => navigate("/verifiedJobs")}>
+                  <ListItemIcon>
+                    <DashboardIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Verified Jobs" />
+                </ListItemButton>
               ) : null}
 
               {role === "client" ? (

@@ -14,7 +14,7 @@ export default function StickyFooter() {
   });
 
   useEffect(() => {
-    axiosInstance.get('jobs/verified/').then((res) => {
+    axiosInstance.get("jobs/verified/").then((res) => {
       const allPosts = res.data;
       setAppState({ loading: false, posts: allPosts });
       console.log(res.data);
@@ -24,10 +24,8 @@ export default function StickyFooter() {
     <div className="App">
       <h1>Jobs completed from me</h1>
       <div>
-      <PostLoading isLoading={appState.loading} posts={appState.posts} />
-
+        <PostLoading isLoading={appState.loading} posts={appState.posts} />
       </div>
-      
     </div>
   );
 }

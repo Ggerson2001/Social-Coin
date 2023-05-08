@@ -168,7 +168,7 @@ export const TransactionProvider = ({ children }) => {
 
     if (!isVerified) {
       transactionsContract.verifyJob(lg, client, jobId);
-    }else{
+    } else {
       return alert("Job is already verified");
     }
   };

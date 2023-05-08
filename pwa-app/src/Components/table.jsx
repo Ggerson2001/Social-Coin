@@ -10,10 +10,9 @@ import axiosInstance from "../utils/axios";
 
 export default function BasicTable() {
   const [rows, setRows] = useState([]);
-  const jobSlug = window.location.pathname.split('/').pop(); 
+  const jobSlug = window.location.pathname.split("/").pop();
   const [userName, setUserName] = useState();
-  const [metaAddress,setMetaAddress]=useState();
-
+  const [metaAddress, setMetaAddress] = useState();
 
   useEffect(() => {
     axiosInstance.get(`job-verification/${jobSlug}/`).then((res) => {
@@ -23,29 +22,20 @@ export default function BasicTable() {
       }));
       setRows(formattedRows);
       setUserName(formattedRows[0].author_name);
-      setMetaAddress(formattedRows[0].author_address)
-      console.log("formattedrows",formattedRows);
-      
-      
+      setMetaAddress(formattedRows[0].author_address);
+      console.log("formattedrows", formattedRows);
     });
 
-      
     // eslint-disable-next-line
   }, []);
-
-
-
- 
 
   return (
     <TableContainer component={Paper} sx={{ width: "80%" }}>
       <Table sx={{ minWidth: 350 }} aria-label="simple table">
         <TableHead>
-          
-            <TableCell>Username</TableCell>
-            <TableCell align="right">Date</TableCell>
-            <TableCell align="right">MetaMask Address</TableCell>
-          
+          <TableCell>Username</TableCell>
+          <TableCell align="right">Date</TableCell>
+          <TableCell align="right">MetaMask Address</TableCell>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
@@ -63,8 +53,5 @@ export default function BasicTable() {
         </TableBody>
       </Table>
     </TableContainer>
-
-         
-
   );
 }

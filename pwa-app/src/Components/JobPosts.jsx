@@ -14,6 +14,7 @@ import logo from "../assets/minilogo192.png";
 
 const Posts = (props) => {
   const { posts } = props;
+  const role = localStorage.getItem("role");
   const navigate = useNavigate();
   if (!posts || posts.length === 0) return <p>Can not find any posts, sorry</p>;
 
@@ -85,21 +86,28 @@ const Posts = (props) => {
                   >
                     View
                   </Button>
-                  <Button
-                    size="small"
-                    onClick={() => navigate("/admin/edit/" + post.id)}
-                    data-testid="edit-post"
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    size="small"
-                    onClick={() => deleteObject(post.id)}
-                    sx={{ color: "error.main" }}
-                    data-testid="delete-post"
-                  >
-                    <DeleteIcon />
-                  </Button>
+
+                  {role === "admin" || role === "service" ? (
+                    <div>
+                      <Button
+                        size="small"
+                        onClick={() => navigate("/admin/edit/" + post.id)}
+                        data-testid="edit-post"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        size="small"
+                        onClick={() => deleteObject(post.id)}
+                        sx={{ color: "error.main" }}
+                        data-testid="delete-post"
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </div>
+                  ) : (
+                    <p></p>
+                  )}
                 </CardActions>
               </Card>
             </Grid>

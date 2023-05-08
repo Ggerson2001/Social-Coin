@@ -49,13 +49,17 @@ function LoginScreen() {
           localStorage.setItem("access_token", res.data.access);
           localStorage.setItem("refresh_token", res.data.refresh);
           localStorage.setItem("role", res.data.role);
-         localStorage.setItem("id",res.data.id);
+          localStorage.setItem("id", res.data.id);
           axiosInstance.defaults.headers["Authorization"] =
             "JWT " + localStorage.getItem("access_token");
-          navigate("/home");
 
-          console.log(res);
-          //console.log(res.data);
+          console.log(typeof res.data.role);
+
+          if (res.data.role === "admin" || res.data.role === "service") {
+            navigate("/home");
+          } else {
+            navigate("/jobs/verifiedJobs");
+          }
         },
         (reason) => {
           console.error(reason); // Error!
@@ -140,13 +144,6 @@ function LoginScreen() {
                 Sign In
               </Button>
               {error ? <Alert severity="error">{error}</Alert> : null}
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-              </Grid>
             </Box>
           </Box>
         </Grid>

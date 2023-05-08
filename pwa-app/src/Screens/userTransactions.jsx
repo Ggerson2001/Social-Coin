@@ -40,12 +40,12 @@ export default function DataTable() {
       receiveAccount: shortenAddress(transaction.addressTo),
       amount: transaction.amount,
       timestamp: transaction.timestamp,
-      jobId:transaction.jobId
+      jobId: transaction.jobId,
     }));
 
   return (
     <div style={{ height: 400, width: "100%" }}>
-     <h1>My Transactions</h1>
+      <h1>My Transactions</h1>
       <DataGrid
         rows={rows}
         columns={columns}

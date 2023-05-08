@@ -6,10 +6,9 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Loader from "../Components/Loader";
+import Loader from "../Components/loader";
 import Alert from "@mui/material/Alert";
 import axiosInstance from "../utils/axios";
-
 
 const Input = ({ placeholder, name, type, value, handleChange }) => (
   <TextField
@@ -98,8 +97,6 @@ const Transfer = () => {
                   <Input
                     placeholder="Address To"
                     name="addressTo"
-                    
-                    
                     handleChange={handleChange}
                   />
                 </Grid>
