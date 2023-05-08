@@ -27,24 +27,25 @@ contract Transactions {
     JobVerification [] verifiedJobs;
 
 
-    function verifyJob(address lg,address client, uint32 jobId) public  {
+    function verifyJob(address payable lg,address payable client, uint32 jobId) public returns (bytes32) {
         require(msg.sender == lg, "Only localgovernment can verify job");
         verifiedJobs.push(JobVerification(lg,client,jobId));
+        return keccak256(abi.encodePacked(lg, client, jobId));
         
     }
 
 
     function addToBlockchain(address payable receiver, uint amount, string memory message, string memory keyword, uint32 jobId) public {
-    bool isVerified = false;
-    for (uint i = 0; i < verifiedJobs.length; i++) {
-        if (verifiedJobs[i].lg == msg.sender &&
-            verifiedJobs[i].client == receiver &&
-            verifiedJobs[i].jobId == jobId) {
-            isVerified = true;
-            break;
-        }
-    }
-    require(isVerified, "Job is not verified");
+    // bool isVerified = false;
+    // for (uint i = 0; i < verifiedJobs.length; i++) {
+    //     if (verifiedJobs[i].lg == msg.sender &&
+    //         verifiedJobs[i].client == receiver &&
+    //         verifiedJobs[i].jobId == jobId) {
+    //         isVerified = true;
+    //         break;
+    //     }
+    // }
+    // require(isVerified, "Job is not verified");
 
     transactionCount += 1;
     transactions.push(TransferStruct(msg.sender, receiver, amount, message, block.timestamp, keyword,jobId));

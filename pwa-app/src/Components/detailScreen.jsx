@@ -16,12 +16,17 @@ import Grid from "@mui/material/Grid";
 import QrCode from "./qrCode";
 import MyModal from "./modal";
 import { TransactionContext } from "../context/TransactionContext";
+import { ethers } from "ethers";
+import Alert from "@mui/material/Alert";
 
 export default function Post() {
-  const { verifyJob } = useContext(TransactionContext);
+  const { verifyJob, jobNotVerified, verifications } =
+    useContext(TransactionContext);
   const { slug } = useParams();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ type: "", message: "" });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const navigate = useNavigate();
   const jobSlug = window.location.pathname.split("/").pop();
@@ -31,6 +36,7 @@ export default function Post() {
   const [jobId, setJobId] = useState(0);
   const [metaAddress, setMetaAddress] = useState();
   const [published, setPublished] = useState();
+  let isVerified = false;
 
   const role = localStorage.getItem("role");
 
@@ -72,7 +78,7 @@ export default function Post() {
   };
 
   const openModal = (type) => {
-    setModalContent({ type, message: "Job is verified in blockchain" });
+    setModalContent({ type, message: "Job is not completed from any client" });
     setIsOpen(true);
   };
 
@@ -95,8 +101,6 @@ export default function Post() {
   };
 
   const handleUpdate = () => {
-    console.log(jobId);
-
     axiosInstance.patch(`admin/edit/${jobId}/`, {
       status: "done",
       slug: slug,
@@ -106,14 +110,25 @@ export default function Post() {
     window.location.reload();
   };
 
-  const verifyUpdate = () => {
-    handleVerification();
-    handleUpdate();
-    openModal("success");
-  };
+  const verifyUpdate = async () => {
+    try {
+      if (metaAddress != undefined) {
+        await verifyJob(
+          "0x9DDac21Af7c85F417D0deF8fDF0515c8432D4431",
+          metaAddress,
+          jobId
+        );
 
-  const handleVerification = () => {
-    verifyJob("0xAF36996A59B4749aAaA5211B495b2de686A09933", metaAddress, jobId);
+        setTimeout(() => {
+          handleUpdate();
+        }, 4000);
+      } else {
+        openModal("error");
+      }
+    } catch (error) {
+      console.log(error);
+      // Handle the error
+    }
   };
 
   return (
@@ -139,7 +154,7 @@ export default function Post() {
                   variant="body2"
                   color={data.status === "done" ? "green" : "red"}
                 >
-                  Status: {data.status}
+                  Status:{data.status === "done" ? "Verified" : "Unverified"}
                 </Typography>
 
                 <Typography variant="body2" color="text.primary">
@@ -161,13 +176,31 @@ export default function Post() {
                       </ListItem> */}
               </List>
 
-              <Button
-                variant="contained"
-                onClick={() => verifyUpdate()}
-                disabled={data.status === "done"}
-              >
-                Verify job to blockchain
-              </Button>
+              {role === "admin" ? (
+                <div>
+                  <Button
+                    variant="contained"
+                    onClick={() => verifyUpdate()}
+                    disabled={data.status === "done"}
+                  >
+                    Verify job to blockchain
+                  </Button>
+                </div>
+              ) : (
+                <p></p>
+              )}
+
+              {role === "client" ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmit}
+                >
+                  Verify Job
+                </Button>
+              ) : (
+                <p></p>
+              )}
 
               <MyModal
                 isOpen={modalIsOpen}
@@ -211,6 +244,7 @@ export default function Post() {
           &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
           <Button
             variant="contained"
+            disabled={data.status === "undone"}
             onClick={() => navigate(`/transfer/${jobSlug}`)}
           >
             Transfer Coins
@@ -223,21 +257,6 @@ export default function Post() {
       {role === "service" ? (
         <div>
           <QrCode />
-        </div>
-      ) : (
-        <p></p>
-      )}
-
-      {role === "client" ? (
-        <div>
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-          >
-            Verify Job
-          </Button>
         </div>
       ) : (
         <p></p>

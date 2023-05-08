@@ -10,6 +10,7 @@ import Loader from "../Components/Loader";
 import Alert from "@mui/material/Alert";
 import axiosInstance from "../utils/axios";
 
+
 const Input = ({ placeholder, name, type, value, handleChange }) => (
   <TextField
     id="outlined-helperText"
@@ -31,6 +32,7 @@ const Transfer = () => {
     isLoading,
     isSuccess,
     balance,
+    jobNotVerified,
   } = useContext(TransactionContext);
   let template;
 
@@ -78,8 +80,6 @@ const Transfer = () => {
     // if (!addressTo || !amount || !keyword || !message) return;
     console.log(jobId);
     sendTransaction(jobId);
-
-
   };
 
   return (
@@ -92,61 +92,62 @@ const Transfer = () => {
             Transfer Coins
           </Typography>
           {isLoaded && (
-          <form noValidate>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                
+            <form noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
                   <Input
                     placeholder="Address To"
                     name="addressTo"
                     
+                    
+                    handleChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Input
+                    placeholder="Amount (ETH)"
+                    name="amount"
+                    type="number"
+                    handleChange={handleChange}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Input
+                    placeholder="Enter Message"
+                    name="message"
                     type="text"
                     handleChange={handleChange}
                   />
-               
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <Input
-                  placeholder="Amount (ETH)"
-                  name="amount"
-                  type="number"
-                  handleChange={handleChange}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <Input
-                  placeholder="Enter Message"
-                  name="message"
-                  type="text"
-                  handleChange={handleChange}
-                />
-              </Grid>
-            </Grid>
-            {isLoading ? (
-              <Loader />
-            ) : (
-              <div>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSubmit}
-                >
-                  Send now
-                </Button>
-                {isSuccess ? (
-                  <Alert severity="success">
-                    Transaction is made succesfully!
-                  </Alert>
-                ) : (
-                  <Typography></Typography>
-                )}
-              </div>
-            )}
-          </form>
-           )}
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <div>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                  >
+                    Send now
+                  </Button>
+                  {isSuccess ? (
+                    <Alert severity="success">
+                      Transaction is made successfully!
+                    </Alert>
+                  ) : jobNotVerified ? (
+                    <Alert severity="error">
+                      Transactions was not successful. Please verify job in
+                      blockchain.
+                    </Alert>
+                  ) : null}
+                </div>
+              )}
+            </form>
+          )}
         </div>
       </Container>
     </div>

@@ -33,7 +33,7 @@ export default function DataTable() {
       jobId:verification.jobId,
     }));
 
-    console.log(rows[0].lg)
+    
     
   
     // eslint-disable-next-line

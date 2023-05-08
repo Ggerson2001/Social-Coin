@@ -34,10 +34,10 @@ export const TransactionProvider = ({ children }) => {
     amount: "",
     keyword: "",
     message: "",
-    jobId:23
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [jobNotVerified, setJobNotVerified] = useState(false);
 
   const [transactionCount, setTransactionCount] = useState(
     localStorage.getItem("transactionCount")
@@ -51,11 +51,6 @@ export const TransactionProvider = ({ children }) => {
   const handleChange = (e, name) => {
     setFormData((prevState) => ({ ...prevState, [name]: e.target.value }));
   };
-
-
-
-
-  
 
   const getAllTransactions = async () => {
     try {
@@ -75,11 +70,9 @@ export const TransactionProvider = ({ children }) => {
             message: transaction.message,
             keyword: "test",
             amount: parseInt(transaction.amount._hex) / 10 ** 18,
+            jobId: transaction.jobId,
           })
         );
-
-
-       
 
         setTransactions(structuredTransactions);
       } else {
@@ -89,8 +82,6 @@ export const TransactionProvider = ({ children }) => {
       console.log(error);
     }
   };
-
-
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -102,7 +93,6 @@ export const TransactionProvider = ({ children }) => {
         setCurrentAccount(accounts[0]);
         getAllTransactions();
         getAllJobVerification();
-        
       } else {
         console.log("No accounts found");
       }
@@ -165,17 +155,23 @@ export const TransactionProvider = ({ children }) => {
     getAddressBalance(accounts[0]);
   };
 
-
-
-
-
-  const verifyJob=async(lg,client,jobId)=>{
+  const verifyJob = async (lg, client, jobId) => {
     const transactionsContract = EthereumContract();
 
-    transactionsContract.verifyJob(lg,client,jobId);
+    let isVerified = false;
+    for (let i = 0; i < verifications.length; i++) {
+      if (verifications[i].jobId === jobId) {
+        isVerified = true;
+        break;
+      }
+    }
 
-  }
-
+    if (!isVerified) {
+      transactionsContract.verifyJob(lg, client, jobId);
+    }else{
+      return alert("Job is already verified");
+    }
+  };
 
   const getAllJobVerification = async () => {
     try {
@@ -185,16 +181,13 @@ export const TransactionProvider = ({ children }) => {
         const jobsVerified =
           await transactionsContract.getAllJobVerifications();
 
-        const structuredVerification = jobsVerified.map(
-          (verification) => ({
-            lg: verification.lg,
-            client: verification.client,
-            jobId: verification.jobId
-          })
-        );
+        const structuredVerification = jobsVerified.map((verification) => ({
+          lg: verification.lg,
+          client: verification.client,
+          jobId: verification.jobId,
+        }));
 
         setVerifications(structuredVerification);
-
       } else {
         console.log("Ethereum is not present");
       }
@@ -203,14 +196,11 @@ export const TransactionProvider = ({ children }) => {
     }
   };
 
-
-
-
-  const sendTransaction = async () => {
+  const sendTransaction = async (jobId) => {
     try {
       if (!ethereum) return alert("PLease install metamask");
 
-      const { addressTo, amount, keyword, message,jobId } = formData;
+      const { addressTo, amount, keyword, message } = formData;
       const transactionsContract = EthereumContract();
       const parsedAmount = ethers.utils.parseEther(amount);
 
@@ -228,7 +218,21 @@ export const TransactionProvider = ({ children }) => {
         ],
       });
 
-      
+      const sender = currentAccount;
+      const receiver = addressTo;
+
+      let isVerified = false;
+      for (let i = 0; i < verifications.length; i++) {
+        if (
+          verifications[i].client === receiver &&
+          verifications[i].jobId === jobId
+        ) {
+          isVerified = true;
+          break;
+        }
+      }
+
+      // // Check if the sender, receiver, and jobId exist in the verifications array
 
       const transactionHash = await transactionsContract.addToBlockchain(
         addressTo,
@@ -237,24 +241,26 @@ export const TransactionProvider = ({ children }) => {
         keyword,
         jobId
       );
-      
 
-      console.log(verifications);
+      if (isVerified) {
+        setIsLoading(true);
+        console.log(`Loading - ${transactionHash.hash}`);
+        await transactionHash.wait();
+        setIsLoading(false);
+        console.log(`Success - ${transactionHash.hash}`);
+        setIsSuccess(true);
 
-      setIsLoading(true);
-      console.log(`Loading - ${transactionHash.hash}`);
-      await transactionHash.wait();
-      setIsLoading(false);
-      console.log(`Success - ${transactionHash.hash}`);
-      setIsSuccess(true);
+        const transactionCount =
+          await transactionsContract.getTransactionCount();
 
-      const transactionCount = await transactionsContract.getTransactionCount();
+        setTransactionCount(transactionCount.toNumber());
 
-      setTransactionCount(transactionCount.toNumber());
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      } else {
+        setJobNotVerified(true);
+      }
 
       // console.log(transactionCount);
     } catch (error) {
@@ -267,14 +273,8 @@ export const TransactionProvider = ({ children }) => {
     checkIfTransactionsExists();
     getBalance();
 
-    
-  
     // eslint-disable-next-line
   }, []);
-
-  // useEffect(() => {
-  //   console.log("verifications", verifications);
-  // }, [verifications]);
 
   return (
     <TransactionContext.Provider
@@ -291,8 +291,8 @@ export const TransactionProvider = ({ children }) => {
         isSuccess,
         balance,
         verifyJob,
-        verifications
-        
+        verifications,
+        jobNotVerified,
       }}
     >
       {children}

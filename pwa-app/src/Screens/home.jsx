@@ -22,7 +22,7 @@ export default function StickyFooter() {
   }, [setAppState]);
   return (
     <div className="App">
-      <h1>Latest Posts</h1>
+      <h1 style={{ textAlign: "center" }}>All Job Posts</h1>
       <div>
       <PostLoading isLoading={appState.loading} posts={appState.posts} />
 

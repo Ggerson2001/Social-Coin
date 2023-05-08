@@ -16,6 +16,11 @@ const columns = [
     headerName: "Timestamp",
     width: 180,
   },
+  {
+    field: "jobId",
+    headerName: "JobId",
+    width: 180,
+  },
 ];
 
 export const shortenAddress = (address) =>
@@ -35,6 +40,7 @@ export default function DataTable() {
       receiveAccount: shortenAddress(transaction.addressTo),
       amount: transaction.amount,
       timestamp: transaction.timestamp,
+      jobId:transaction.jobId
     }));
 
   return (

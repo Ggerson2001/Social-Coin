@@ -5,9 +5,9 @@ require('@nomiclabs/hardhat-waffle');
 module.exports={
   solidity:'0.8.0',
   networks:{
-    goerli:{
-      url:'https://eth-goerli.g.alchemy.com/v2/qSBf-nL5ivwyQ4iKtttLWacn8TkMdBAa',
-      accounts:['14db90c28e2c2f4663ceba3be22b1649a017b6a22e2c8d3c79322edd8a20e374']
+    sepolia:{
+      url:'https://eth-sepolia.g.alchemy.com/v2/jtsYQZYNZS2Fr5UhIsHqEN4iwAwR91XH',
+      accounts:['151f3ac659b0b5c513fa9f38e1fa68ec0f8c49f40c79e276b5bb3c2f67d0e982']
     }
   }
 }

@@ -39,7 +39,7 @@ function MyModal(props) {
   marginTop: '16px', 
   cursor: 'pointer',
   borderRadius: '8px'  }}
-  className="modal-button" onClick={closeModal}>Close Modal</button>
+  className="modal-button" onClick={closeModal}>Close </button>
     </Modal>
   );
 }
