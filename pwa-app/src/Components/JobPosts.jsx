@@ -9,6 +9,7 @@ import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Tooltip from "@mui/material/Tooltip";
 import axiosInstance from "../utils/axios";
 import logo from "../assets/minilogo192.png";
 
@@ -91,11 +92,12 @@ const Posts = (props) => {
                     <div>
                       <Button
                         size="small"
-                        onClick={() => navigate("/admin/edit/" + post.id)}
+                        onClick={() => navigate("/edit/" + post.id)}
                         data-testid="edit-post"
                       >
                         Edit
                       </Button>
+                      <Tooltip title="Delete">
                       <Button
                         size="small"
                         onClick={() => deleteObject(post.id)}
@@ -103,7 +105,9 @@ const Posts = (props) => {
                         data-testid="delete-post"
                       >
                         <DeleteIcon />
+                        
                       </Button>
+                      </Tooltip>
                     </div>
                   ) : (
                     <p></p>

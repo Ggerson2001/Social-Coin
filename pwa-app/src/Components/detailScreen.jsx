@@ -115,7 +115,7 @@ export default function Post() {
 
         setTimeout(() => {
           handleUpdate();
-        }, 4000);
+        }, 5000);
       } else {
         openModal("error");
       }
@@ -183,6 +183,7 @@ export default function Post() {
                 <Button
                   variant="contained"
                   color="primary"
+                  disabled={data.status === "done"}
                   onClick={handleSubmit}
                 >
                   Verify Job
@@ -216,8 +217,9 @@ export default function Post() {
           <Typography gutterBottom variant="h5" component="div">
             Job completed from
           </Typography>
-          <Table />
-          &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+          <div style={{ margin: "16px 0" }}>
+            <Table />
+          </div>
           <Button
             variant="contained"
             disabled={data.status === "undone"}

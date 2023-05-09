@@ -3,7 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 
 import { TransactionContext } from "../context/TransactionContext";
 const columns = [
-  { field: "id", headerName: "Transaction ID", width: 140 },
+  { field: "id", headerName: "Verification ID", width: 140 },
   { field: "lg", headerName: "Verified from", width: 130 },
   { field: "client", headerName: "Client address", width: 130 },
   {
@@ -46,7 +46,7 @@ export default function DataTable() {
 
   return (
     <div style={{ height: 400, width: "100%" }}>
-      <h1>Verified Jobs</h1>
+      <h1>Verified Jobs in Ethereum Network</h1>
       <DataGrid
         rows={rows}
         columns={columns}

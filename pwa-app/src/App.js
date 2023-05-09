@@ -29,8 +29,8 @@ function App() {
             <Route path="/jobs/verifiedJobs" element={<ClientVerification />} />
 
             <Route path="/post/:slug" element={<DetailScreen />} />
-            <Route path="/admin/create" element={<Create />} />
-            <Route path="/admin/edit/:id" element={<Edit />} />
+            <Route path="/create" element={<Create />} />
+            <Route path="/edit/:id" element={<Edit />} />
           </Route>
           ... other routes with layout ...
         </Route>

@@ -45,7 +45,7 @@ export default function DataTable() {
 
   return (
     <div style={{ height: 400, width: "100%" }}>
-      <h1>My Transactions</h1>
+      <h1>Transactions in Ethereum network</h1>
       <DataGrid
         rows={rows}
         columns={columns}

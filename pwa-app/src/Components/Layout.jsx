@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import * as React from "react";
+import React, { useContext } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -16,9 +17,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { useNavigate } from "react-router-dom";
 import ListItemButton from "@mui/material/ListItemButton";
+import logo from "../assets/minilogo192-blue.jpg";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import { TransactionContext } from "../context/TransactionContext";
 
 const drawerWidth = 240;
 
@@ -75,6 +78,8 @@ const Layout = () => {
   };
   const role = localStorage.getItem("role");
 
+  const { balance } = useContext(TransactionContext);
+
   const navigate = useNavigate();
   return (
     <div className="layout">
@@ -108,11 +113,20 @@ const Layout = () => {
               >
                 Dashboard
               </Typography>
-              <IconButton color="inherit" onClick={() => navigate("/logout")}>
-                {/* <Badge badgeContent={4} color="secondary"> */}
-                <LogoutIcon />
-                {/* </Badge> */}
-              </IconButton>
+
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Typography color="inherit" noWrap sx={{ marginRight: "20px" }}>
+                  Balance: {balance} <img src={logo} alt="test" style={{ paddingTop: '20px' }} />
+                </Typography>
+                <Tooltip title="Logout">
+                  <IconButton
+                    color="inherit"
+                    onClick={() => navigate("/logout")}
+                  >
+                    <LogoutIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
             </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open}>
@@ -139,7 +153,7 @@ const Layout = () => {
                     <ListItemText primary="Home" />
                   </ListItemButton>
 
-                  <ListItemButton onClick={() => navigate("/admin/create")}>
+                  <ListItemButton onClick={() => navigate("/create")}>
                     <ListItemIcon>
                       <DashboardIcon />
                     </ListItemIcon>

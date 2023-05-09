@@ -36,16 +36,16 @@ contract Transactions {
 
 
     function addToBlockchain(address payable receiver, uint amount, string memory message, string memory keyword, uint32 jobId) public {
-    // bool isVerified = false;
-    // for (uint i = 0; i < verifiedJobs.length; i++) {
-    //     if (verifiedJobs[i].lg == msg.sender &&
-    //         verifiedJobs[i].client == receiver &&
-    //         verifiedJobs[i].jobId == jobId) {
-    //         isVerified = true;
-    //         break;
-    //     }
-    // }
-    // require(isVerified, "Job is not verified");
+    bool isVerified = false;
+    for (uint i = 0; i < verifiedJobs.length; i++) {
+        if (verifiedJobs[i].lg == msg.sender &&
+            verifiedJobs[i].client == receiver &&
+            verifiedJobs[i].jobId == jobId) {
+            isVerified = true;
+            break;
+        }
+    }
+    require(isVerified, "Job is not verified");
 
     transactionCount += 1;
     transactions.push(TransferStruct(msg.sender, receiver, amount, message, block.timestamp, keyword,jobId));

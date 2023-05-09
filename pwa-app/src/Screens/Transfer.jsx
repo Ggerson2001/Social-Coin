@@ -31,6 +31,7 @@ const Transfer = () => {
     isLoading,
     isSuccess,
     balance,
+    verifications,
     jobNotVerified,
   } = useContext(TransactionContext);
   let template;
@@ -61,15 +62,15 @@ const Transfer = () => {
     // eslint-disable-next-line
   }, []);
 
-  if (!currentAccount) {
-    template = (
-      <Button variant="contained" onClick={connectWallet}>
-        Connect Wallet
-      </Button>
-    );
-  } else {
-    template = <Typography>Wallet is connected</Typography>;
-  }
+  // if (!currentAccount) {
+  //   template = (
+  //     <Button variant="contained" onClick={connectWallet}>
+  //       Connect Wallet
+  //     </Button>
+  //   );
+  // } else {
+  //   template = <Typography>Wallet is connected</Typography>;
+  // }
 
   const handleSubmit = (e) => {
     // const { addressTo, amount, keyword, message } = formData;
@@ -77,14 +78,16 @@ const Transfer = () => {
     e.preventDefault();
 
     // if (!addressTo || !amount || !keyword || !message) return;
-    console.log(jobId);
+   
     sendTransaction(jobId);
+
+    console.log(verifications)
   };
 
   return (
     <div>
-      {template}
-      <Typography>Balance: {balance}</Typography>
+      {/* {template}
+      <Typography>Balance: {balance}</Typography> */}
       <Container component="main" maxWidth="sm">
         <div>
           <Typography component="h1" variant="h5">
@@ -122,23 +125,24 @@ const Transfer = () => {
                 <Loader />
               ) : (
                 <div>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                  >
-                    Send now
-                  </Button>
+                  <div style={{ marginTop: "1em" }}>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSubmit}
+                    >
+                      Send now
+                    </Button>
+                  </div>
                   {isSuccess ? (
                     <Alert severity="success">
                       Transaction is made successfully!
                     </Alert>
                   ) : jobNotVerified ? (
                     <Alert severity="error">
-                      Transactions was not successful. Please verify job in
-                      blockchain.
+                      Transactions cannot proceed.Please check address.
                     </Alert>
                   ) : null}
                 </div>
