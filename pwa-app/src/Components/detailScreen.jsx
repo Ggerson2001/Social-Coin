@@ -115,7 +115,7 @@ export default function Post() {
 
         setTimeout(() => {
           handleUpdate();
-        }, 5000);
+        }, 10000);
       } else {
         openModal("error");
       }

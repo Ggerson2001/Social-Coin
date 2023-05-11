@@ -168,7 +168,7 @@ const Layout = () => {
                     <ListItemIcon>
                       <DashboardIcon />
                     </ListItemIcon>
-                    <ListItemText primary="My Transactions" />
+                    <ListItemText primary="Transactions" />
                   </ListItemButton>
                 </div>
               ) : null}
