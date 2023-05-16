@@ -1,8 +1,8 @@
 import QRCode from "qrcode";
 import { useState } from "react";
 
-function QrCode() {
-  const [url, setUrl] = useState("");
+const QrCode = ({ urlProp }) => {
+  const [url, setUrl] = useState(urlProp);
   const [qr, setQr] = useState("");
 
   const GenerateQRCode = () => {
@@ -54,6 +54,6 @@ function QrCode() {
       )}
     </div>
   );
-}
+};
 
 export default QrCode;

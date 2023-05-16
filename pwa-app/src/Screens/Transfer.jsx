@@ -24,8 +24,6 @@ const Input = ({ placeholder, name, type, value, handleChange }) => (
 
 const Transfer = () => {
   const {
-    connectWallet,
-    currentAccount,
     handleChange,
     sendTransaction,
     isLoading,

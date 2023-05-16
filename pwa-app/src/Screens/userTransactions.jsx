@@ -27,7 +27,7 @@ export const shortenAddress = (address) =>
   `${address.slice(0, 5)}...${address.slice(address.length - 4)}`;
 
 export default function DataTable() {
-  const { transactions, currentAccount } = useContext(TransactionContext);
+  const { transactions} = useContext(TransactionContext);
   let transactionId = 1;
 
   console.log(transactions);

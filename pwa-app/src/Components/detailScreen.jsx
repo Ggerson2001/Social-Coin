@@ -16,12 +16,19 @@ import Grid from "@mui/material/Grid";
 import QrCode from "./qrCode";
 import MyModal from "./modal";
 import { TransactionContext } from "../context/TransactionContext";
+import { useDispatch, useSelector } from "react-redux";
+import { setUrl } from "../redux/actions";
 
 export default function Post() {
   const { verifyJob } = useContext(TransactionContext);
   const { slug } = useParams();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ type: "", message: "" });
+  const dispatch = useDispatch();
+  const {url} = useSelector((state) => state.url);
+  
+
+
 
   const navigate = useNavigate();
   const jobSlug = window.location.pathname.split("/").pop();
@@ -39,20 +46,36 @@ export default function Post() {
       setData(res.data);
       setJobId(res.data.id);
       setPublished(res.data.published);
-      console.log("dataaaaaaa", data);
+      
     });
 
-    axiosInstance.get(`job-verification/${jobSlug}/`).then((res) => {
-      const formattedRows = res.data.map((row) => ({
-        ...row,
-        time_created: new Date(row.time_created).toLocaleDateString("en-GB"),
-      }));
 
-      setMetaAddress(formattedRows[0].author_address);
-    });
 
     // eslint-disable-next-line
   }, []);
+
+
+  useEffect(() => {
+    dispatch(setUrl(window.location.href));
+  }, [dispatch]);
+  
+    useEffect(() => {
+      if(role=='admin' && metaAddress!==undefined){
+      axiosInstance.get(`job-verification/${jobSlug}/`).then((res) => {
+        const formattedRows = res.data.map((row) => ({
+          ...row,
+          time_created: new Date(row.time_created).toLocaleDateString("en-GB"),
+        }));
+  
+        setMetaAddress(formattedRows[0].author_address);
+      });
+    }
+  
+      // eslint-disable-next-line
+    }, []);
+
+
+
 
   const formatDate = (dateString) => {
     const options = {
@@ -234,7 +257,7 @@ export default function Post() {
 
       {role === "service" ? (
         <div>
-          <QrCode />
+         <QrCode urlProp={url} />
         </div>
       ) : (
         <p></p>

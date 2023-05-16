@@ -3,7 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -15,12 +14,14 @@ import { useState } from "react";
 import axiosInstance from "../utils/axios";
 import Alert from "@mui/material/Alert";
 import image from "../assets/socialCoin.jpg";
+import { useDispatch, useSelector } from "react-redux";
 
 const theme = createTheme();
 
 function LoginScreen() {
   const [error, setError] = useState();
   const navigate = useNavigate();
+  const {url} = useSelector((state) => state.url);
 
   const initialFormData = Object.freeze({
     email: "",
@@ -59,6 +60,11 @@ function LoginScreen() {
             navigate("/home");
           } else {
             navigate("/jobs/verifiedJobs");
+
+            console.log(url);
+            setTimeout(() => {
+              window.location.replace(url);
+            }, 3000);
           }
         },
         (reason) => {

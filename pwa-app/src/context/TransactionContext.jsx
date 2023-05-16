@@ -208,8 +208,7 @@ export const TransactionProvider = ({ children }) => {
 
      
 
-      const sender = currentAccount;
-      const receiver = addressTo;
+  
 
       let isVerified = false;
       for (let i = 0; i < verifications.length; i++) {
