@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import axiosInstance from "../utils/axios";
+import axiosInstance from "../../utils/axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Table from "../Components/table";
+import Table from "./clientTable";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/minilogo192.png";
+import logo from "../../assets/minilogo192.png";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -15,9 +15,9 @@ import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import QrCode from "./qrCode";
 import MyModal from "./modal";
-import { TransactionContext } from "../context/TransactionContext";
+import { TransactionContext } from "../../Context/TransactionContext";
 import { useDispatch, useSelector } from "react-redux";
-import { setUrl } from "../redux/actions";
+import { setUrl } from "../../redux/actions";
 
 export default function Post() {
   const { verifyJob } = useContext(TransactionContext);
@@ -25,10 +25,7 @@ export default function Post() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState({ type: "", message: "" });
   const dispatch = useDispatch();
-  const {url} = useSelector((state) => state.url);
-  
-
-
+  const { url } = useSelector((state) => state.url);
 
   const navigate = useNavigate();
   const jobSlug = window.location.pathname.split("/").pop();
@@ -46,36 +43,29 @@ export default function Post() {
       setData(res.data);
       setJobId(res.data.id);
       setPublished(res.data.published);
-      
     });
-
-
 
     // eslint-disable-next-line
   }, []);
 
-
   useEffect(() => {
     dispatch(setUrl(window.location.href));
   }, [dispatch]);
-  
-    useEffect(() => {
-      if(role=='admin' && metaAddress!==undefined){
+
+  useEffect(() => {
+    if (role == "admin" && metaAddress !== undefined) {
       axiosInstance.get(`job-verification/${jobSlug}/`).then((res) => {
         const formattedRows = res.data.map((row) => ({
           ...row,
           time_created: new Date(row.time_created).toLocaleDateString("en-GB"),
         }));
-  
+
         setMetaAddress(formattedRows[0].author_address);
       });
     }
-  
-      // eslint-disable-next-line
-    }, []);
 
-
-
+    // eslint-disable-next-line
+  }, []);
 
   const formatDate = (dateString) => {
     const options = {
@@ -111,7 +101,7 @@ export default function Post() {
 
     axiosInstance.post(`create-job-verification/${jobSlug}/`, formData);
 
-    console.log(formData);
+    
     navigate({
       pathname: "/home",
     });
@@ -257,7 +247,7 @@ export default function Post() {
 
       {role === "service" ? (
         <div>
-         <QrCode urlProp={url} />
+          <QrCode urlProp={url} />
         </div>
       ) : (
         <p></p>

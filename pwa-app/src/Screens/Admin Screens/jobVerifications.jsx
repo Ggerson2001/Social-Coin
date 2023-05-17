@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
-import { TransactionContext } from "../context/TransactionContext";
+import { TransactionContext } from "../../Context/TransactionContext";
 const columns = [
   { field: "id", headerName: "Verification ID", width: 140 },
   { field: "lg", headerName: "Verified from", width: 130 },
@@ -20,18 +20,15 @@ export default function DataTable() {
   const { verifications } = useContext(TransactionContext);
   let verificationId = 1;
 
- 
-
   const rows = verifications
-  .slice()
-  .reverse()
-  .map((verification) => ({
-    id: verificationId++,
-    lg: shortenAddress(verification.lg),
-    client: shortenAddress(verification.client),
-    jobId: verification.jobId,
-  }));
-
+    .slice()
+    .reverse()
+    .map((verification) => ({
+      id: verificationId++,
+      lg: shortenAddress(verification.lg),
+      client: shortenAddress(verification.client),
+      jobId: verification.jobId,
+    }));
 
   return (
     <div style={{ height: 400, width: "100%" }}>

@@ -1,7 +1,7 @@
-import { Route, Routes } from 'react-router-dom'
-import DetailScreen from '../Components/detailScreen';
-import Create from '../admin/create';
-import Edit from '../admin/edit';
+import { Route, Routes } from "react-router-dom";
+import DetailScreen from "../Components/detailScreen";
+import Create from "../admin/create";
+import Edit from "../admin/edit";
 import Test from "../Screens/home";
 
 const ServiceUserRoutes = () => {
@@ -12,7 +12,7 @@ const ServiceUserRoutes = () => {
       <Route path="/admin/create" element={<Create />} />
       <Route path="/admin/edit/:id" element={<Edit />} />
     </Routes>
-  )
-}
+  );
+};
 
-export default ServiceUserRoutes
+export default ServiceUserRoutes;

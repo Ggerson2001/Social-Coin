@@ -6,7 +6,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import axiosInstance from "../utils/axios";
+import axiosInstance from "../../utils/axios";
 
 export default function BasicTable() {
   const [rows, setRows] = useState([]);
@@ -23,7 +23,7 @@ export default function BasicTable() {
       setRows(formattedRows);
       setUserName(formattedRows[0].author_name);
       setMetaAddress(formattedRows[0].author_address);
-      console.log("formattedrows", formattedRows);
+      
     });
 
     // eslint-disable-next-line
@@ -31,27 +31,29 @@ export default function BasicTable() {
 
   return (
     <TableContainer component={Paper} sx={{ width: "80%" }}>
-      <Table sx={{ minWidth: 350 }} aria-label="simple table">
-        <TableHead>
+    <Table sx={{ minWidth: 350 }} aria-label="simple table">
+      <TableHead>
+        <TableRow>
           <TableCell>Username</TableCell>
           <TableCell align="right">Date</TableCell>
           <TableCell align="right">MetaMask Address</TableCell>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {userName}
-              </TableCell>
-              <TableCell align="right">{row.time_created}</TableCell>
-              <TableCell align="right">{metaAddress}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {rows.map((row) => (
+          <TableRow
+            key={row.id}
+            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+          >
+            <TableCell component="th" scope="row">
+              {userName}
+            </TableCell>
+            <TableCell align="right">{row.time_created}</TableCell>
+            <TableCell align="right">{metaAddress}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
   );
 }

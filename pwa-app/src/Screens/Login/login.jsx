@@ -11,9 +11,9 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axiosInstance from "../utils/axios";
+import axiosInstance from "../../utils/axios";
 import Alert from "@mui/material/Alert";
-import image from "../assets/socialCoin.jpg";
+import image from "../../assets/socialCoin.jpg";
 import { useDispatch, useSelector } from "react-redux";
 
 const theme = createTheme();
@@ -21,7 +21,7 @@ const theme = createTheme();
 function LoginScreen() {
   const [error, setError] = useState();
   const navigate = useNavigate();
-  const {url} = useSelector((state) => state.url);
+  const { url } = useSelector((state) => state.url);
 
   const initialFormData = Object.freeze({
     email: "",

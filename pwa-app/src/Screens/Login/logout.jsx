@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import axiosInstance from "../utils/axios";
+import axiosInstance from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {

@@ -204,28 +204,20 @@ export const TransactionProvider = ({ children }) => {
       const transactionsContract = EthereumContract();
       const parsedAmount = ethers.utils.parseEther(amount);
 
-      
-
-     
-
-  
-
       let isVerified = false;
       for (let i = 0; i < verifications.length; i++) {
-        if (verifications[i].client === addressTo && verifications[i].jobId === jobId) {
+        if (
+          verifications[i].client === addressTo &&
+          verifications[i].jobId === jobId
+        ) {
           isVerified = true;
           break;
         }
       }
 
-      
-
       // // Check if the sender, receiver, and jobId exist in the verifications array
 
-  
-
-      if (isVerified===true) {
-
+      if (isVerified === true) {
         const transactionHash = await transactionsContract.addToBlockchain(
           addressTo,
           parsedAmount,
@@ -246,7 +238,6 @@ export const TransactionProvider = ({ children }) => {
           ],
         });
 
-
         setIsLoading(true);
         console.log(`Loading - ${transactionHash.hash}`);
         await transactionHash.wait();
@@ -264,12 +255,11 @@ export const TransactionProvider = ({ children }) => {
         }, 2000);
       } else {
         setJobNotVerified(true);
-        
       }
 
       // console.log(transactionCount);
     } catch (error) {
-      return alert("Transaction was unsuccesfull.Address is not correct ")
+      return alert("Transaction was unsuccesfull.Address is not correct ");
       console.log(error);
     }
   };

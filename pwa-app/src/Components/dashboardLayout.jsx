@@ -21,7 +21,7 @@ import logo from "../assets/minilogo192-blue.jpg";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import { TransactionContext } from "../context/TransactionContext";
+import { TransactionContext } from "../Context/TransactionContext";
 
 const drawerWidth = 240;
 

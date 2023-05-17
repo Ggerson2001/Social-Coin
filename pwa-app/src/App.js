@@ -1,17 +1,16 @@
-import LoginScreen from "./Screens/login";
-import SignUpScreen from "./Screens/signUp";
+import LoginScreen from "./Screens/Login/login";
 import { Routes, Route } from "react-router-dom";
-import Layout from "./Components/layout";
-import Test from "./Screens/home";
-import Logout from "./Screens/logout";
-import Transfer from "./Screens/Transfer";
-import MyTransactions from "./Screens/userTransactions";
+import Layout from "./Components/dashboardLayout";
+import Test from "./Screens/Home Screen/home";
+import Logout from "./Screens/Login/logout";
+import Transfer from "./Screens/Admin Screens/Transfer";
+import MyTransactions from "./Screens/Admin Screens/userTransactions";
 import PrivateRoutes from "./routes/privateRoutes";
-import DetailScreen from "./Components/detailScreen";
-import Create from "./admin/create";
-import Edit from "./admin/edit";
-import VerifiedJobs from "./Screens/jobVerifications";
-import ClientVerification from "./Screens/clientVerification";
+import DetailScreen from "./Components/DetailScreen/detailScreen";
+import Create from "./Screens/Admin Screens/create";
+import Edit from "./Screens/Admin Screens/edit";
+import VerifiedJobs from "./Screens/Admin Screens/jobVerifications";
+import ClientVerification from "./Screens/clientCompletedPosts";
 
 
 
@@ -22,7 +21,6 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<LoginScreen />} />
-        <Route path="/signup" element={<SignUpScreen />} />
         <Route path="/logout" element={<Logout />} />
 
         <Route element={<Layout />}>

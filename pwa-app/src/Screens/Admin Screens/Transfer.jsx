@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { TransactionContext } from "../context/TransactionContext";
+import { TransactionContext } from "../../Context/TransactionContext";
 // import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Loader from "../Components/loader";
+import Loader from "../../Components/Loaders/loader";
 import Alert from "@mui/material/Alert";
-import axiosInstance from "../utils/axios";
+import axiosInstance from "../../utils/axios";
 
 const Input = ({ placeholder, name, type, value, handleChange }) => (
   <TextField
@@ -76,10 +76,10 @@ const Transfer = () => {
     e.preventDefault();
 
     // if (!addressTo || !amount || !keyword || !message) return;
-   
+
     sendTransaction(jobId);
 
-    console.log(verifications)
+    console.log(verifications);
   };
 
   return (

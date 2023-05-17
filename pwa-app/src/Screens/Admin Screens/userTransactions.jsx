@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
-import { TransactionContext } from "../context/TransactionContext";
+import { TransactionContext } from "../../Context/TransactionContext";
 const columns = [
   { field: "id", headerName: "Transaction ID", width: 140 },
   { field: "sentAccount", headerName: "From", width: 130 },
@@ -27,7 +27,7 @@ export const shortenAddress = (address) =>
   `${address.slice(0, 5)}...${address.slice(address.length - 4)}`;
 
 export default function DataTable() {
-  const { transactions} = useContext(TransactionContext);
+  const { transactions } = useContext(TransactionContext);
   let transactionId = 1;
 
   console.log(transactions);

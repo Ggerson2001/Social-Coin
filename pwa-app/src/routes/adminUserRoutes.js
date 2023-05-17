@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import Transfer from '../Screens/Transfer';
-import MyTransactions from '../Screens/userTransactions';
-
+import Transfer from "../Screens/Transfer";
+import MyTransactions from "../Screens/userTransactions";
 
 const AdminUserRoutes = () => {
   return (

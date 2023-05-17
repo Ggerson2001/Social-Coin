@@ -10,8 +10,8 @@ import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
-import axiosInstance from "../utils/axios";
-import logo from "../assets/minilogo192.png";
+import axiosInstance from "../../utils/axios";
+import logo from "../../assets/minilogo192.png";
 
 const Posts = (props) => {
   const { posts } = props;
@@ -26,9 +26,7 @@ const Posts = (props) => {
         .delete("admin/delete/" + id)
         .catch(function (error) {
           if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+         
           }
         })
         .then(function () {

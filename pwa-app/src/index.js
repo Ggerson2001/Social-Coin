@@ -5,7 +5,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 // import * as serviceWorkerRegistration from './utils/serviceWorkerRegistration';
 import reportWebVitals from './utils/reportWebVitals';
-import { TransactionProvider } from './context/TransactionContext'
+import { TransactionProvider } from './Context/TransactionContext';
 import { Provider } from "react-redux";
 import store from "./redux/store";
 
