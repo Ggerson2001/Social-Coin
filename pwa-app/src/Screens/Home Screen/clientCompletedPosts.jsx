@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import PostLoadingComponent from "../Components/Loaders/postLoading";
-import Posts from "../Components/Job Posts/jobPosts";
-import axiosInstance from "../utils/axios";
+import PostLoadingComponent from "../../Components/Loaders/postLoading";
+import Posts from "../../Components/Job Posts/jobPosts";
+import axiosInstance from "../../utils/axios";
 
 //
 

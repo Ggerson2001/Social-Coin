@@ -20,4 +20,4 @@ RUN npm run build
 EXPOSE 3001
 
 # Run the React application when the container starts
-CMD ["npm", "start"]
+CMD ["npm","run", "dev"]

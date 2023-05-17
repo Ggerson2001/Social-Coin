@@ -10,7 +10,7 @@ import DetailScreen from "./Components/DetailScreen/detailScreen";
 import Create from "./Screens/Admin Screens/create";
 import Edit from "./Screens/Admin Screens/edit";
 import VerifiedJobs from "./Screens/Admin Screens/jobVerifications";
-import ClientVerification from "./Screens/clientCompletedPosts";
+import ClientVerification from "./Screens/Home Screen/clientCompletedPosts";
 
 
 

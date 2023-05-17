@@ -32,9 +32,10 @@ export default function StickyFooter() {
     axiosInstance.get().then((res) => {
       const allPosts = res.data;
       setAppState({ loading: false, posts: allPosts });
-      console.log(res.data);
+      
     });
   }, [setAppState]);
+  
   return (
     <div className="App">
       {template}
