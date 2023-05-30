@@ -12,6 +12,11 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 export default function Create() {
+  /**
+   * slugify function converts a string into a slug form by replacing special characters and spaces.
+   * It uses predefined arrays 'a' and 'b' to map special characters to their corresponding replacements.
+   * Regular expressions and string manipulation methods are used to perform the replacements.
+   */
   function slugify(string) {
     const a =
       "àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;";
@@ -26,9 +31,7 @@ export default function Create() {
         .replace(/\s+/g, "-") // Replace spaces with -
         .replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
         .replace(/&/g, "-and-") // Replace & with 'and'
-        // eslint-disable-next-line
         .replace(/[^\w\-]+/g, "") // Remove all non-word characters
-        // eslint-disable-next-line
         .replace(/\-\-+/g, "-") // Replace multiple - with single -
         .replace(/^-+/, "") // Trim - from start of text
         .replace(/-+$/, "")
@@ -36,6 +39,8 @@ export default function Create() {
   }
 
   const navigate = useNavigate();
+
+  // Define initial form data state
   const initialFormData = Object.freeze({
     title: "",
     place: "",
@@ -44,24 +49,24 @@ export default function Create() {
     reward: 0,
   });
 
+  // Set up state variables
   const [postData, updateFormData] = useState(initialFormData);
   const [postimage, setPostImage] = useState(null);
 
+  // Event handler for form input changes
   const handleChange = (e) => {
-    // eslint-disable-next-line
-    if ([e.target.name] == "image") {
+    if (e.target.name === "image") {
       setPostImage({
         image: e.target.files,
       });
       console.log(e.target.files);
     }
-    // eslint-disable-next-line
-    if ([e.target.name] == "title") {
+
+    if (e.target.name === "title") {
       updateFormData({
         ...postData,
         [e.target.name]: e.target.value.trim(),
-        // eslint-disable-next-line
-        ["slug"]: slugify(e.target.value.trim()),
+        slug: slugify(e.target.value.trim()),
       });
     } else {
       updateFormData({
@@ -71,8 +76,11 @@ export default function Create() {
     }
   };
 
+  // Event handler for form submission
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Create a new FormData object and populate it with form data
     let formData = new FormData();
     formData.append("title", postData.title);
     formData.append("slug", postData.slug);
@@ -83,9 +91,12 @@ export default function Create() {
     formData.append("job_date", "2022-04-03");
     formData.append("image", postimage.image[0]);
 
-    axiosInstance.post(`admin/create/`, formData).then((res) => {
+    // Send a POST request with the form data to create a job post
+    axiosInstance.post(`jobpost/create/`, formData).then((res) => {
       console.log(res.data.id);
     });
+
+    // Navigate to the home page
     navigate({
       pathname: "/home",
     });

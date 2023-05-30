@@ -10,6 +10,7 @@ import Loader from "../../Components/Loaders/loader";
 import Alert from "@mui/material/Alert";
 import axiosInstance from "../../utils/axios";
 
+// Component for rendering an input field
 const Input = ({ placeholder, name, type, value, handleChange }) => (
   <TextField
     id="outlined-helperText"

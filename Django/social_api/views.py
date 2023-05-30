@@ -29,10 +29,10 @@ class PostList(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        # if user.is_superuser:
-        return JobPost.objects.all()
-        # else:
-        #     return JobPost.objects.filter(author=user)
+        if user.is_superuser:
+            return JobPost.objects.all()
+        else:
+            return JobPost.objects.filter(author=user)
 
 
 
@@ -45,7 +45,7 @@ class PostDetail(generics.RetrieveAPIView):
 
     def get_object(self, queryset=None, **kwargs):
         item = self.kwargs.get('pk')
-        return get_object_or_404(JobPost, slug=item)
+        return get_object_or_404(JobPost, id=item)
 
 # Post Search
 
@@ -115,8 +115,8 @@ class JobVerificationList(generics.ListAPIView):
     serializer_class = JobVerificationSerializer
 
     def get_queryset(self):
-        job_post_slug = self.kwargs['slug']
-        job_post = get_object_or_404(JobPost, slug=job_post_slug)
+        job_post_id = self.kwargs['pk']
+        job_post = get_object_or_404(JobPost, id=job_post_id)
         return JobVerification.objects.filter(job_post=job_post)
 
 
@@ -124,8 +124,8 @@ class CreateJobVerification(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
 
-    def post(self, request, slug, format=None):
-        job_post = get_object_or_404(JobPost, slug=slug)
+    def post(self, request, id, format=None):
+        job_post = get_object_or_404(JobPost, id=id)
         serializer = JobVerificationSerializer(data=request.data)
 
         if serializer.is_valid():

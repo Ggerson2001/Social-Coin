@@ -39,7 +39,8 @@ export default function Post() {
   const role = localStorage.getItem("role");
 
   useEffect(() => {
-    axiosInstance.get("post/" + slug).then((res) => {
+    // Fetch the job post data
+    axiosInstance.get("jobpost/" + jobSlug).then((res) => {
       setData(res.data);
       setJobId(res.data.id);
       setPublished(res.data.published);
@@ -49,11 +50,13 @@ export default function Post() {
   }, []);
 
   useEffect(() => {
+    // Dispatch the current URL to the Redux store
     dispatch(setUrl(window.location.href));
   }, [dispatch]);
 
   useEffect(() => {
-    if (role == "admin" && metaAddress !== undefined) {
+    if (role === "admin") {
+      // Fetch verification data for admin role
       axiosInstance.get(`job-verification/${jobSlug}/`).then((res) => {
         const formattedRows = res.data.map((row) => ({
           ...row,
@@ -99,7 +102,7 @@ export default function Post() {
     formData.append("author", initialFormData.author);
     formData.append("job_post", initialFormData.job_post);
 
-    axiosInstance.post(`create-job-verification/${jobSlug}/`, formData);
+    axiosInstance.post(`create/jobcompletion-request/${jobSlug}/`, formData);
 
     
     navigate({

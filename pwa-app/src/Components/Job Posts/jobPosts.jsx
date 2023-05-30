@@ -23,7 +23,7 @@ const Posts = (props) => {
     if (window.confirm("Are you sure you want to delete this post?")) {
       // Save it!
       axiosInstance
-        .delete("admin/delete/" + id)
+        .delete("jobpost/delete/" + id)
         .catch(function (error) {
           if (error.response) {
          
@@ -80,7 +80,7 @@ const Posts = (props) => {
                 <CardActions sx={{ justifyContent: "space-between" }}>
                   <Button
                     size="small"
-                    onClick={() => navigate("/post/" + post.slug)}
+                    onClick={() => navigate("/post/" + post.id)}
                     data-testid="view-post"
                   >
                     View

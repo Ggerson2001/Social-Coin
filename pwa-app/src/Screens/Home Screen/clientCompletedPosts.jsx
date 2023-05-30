@@ -14,7 +14,7 @@ export default function StickyFooter() {
   });
 
   useEffect(() => {
-    axiosInstance.get("jobs/verified/").then((res) => {
+    axiosInstance.get("jobs-completed/").then((res) => {
       const allPosts = res.data;
       setAppState({ loading: false, posts: allPosts });
       console.log(res.data);

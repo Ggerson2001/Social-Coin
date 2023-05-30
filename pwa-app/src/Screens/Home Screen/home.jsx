@@ -29,7 +29,7 @@ export default function StickyFooter() {
   }
 
   useEffect(() => {
-    axiosInstance.get().then((res) => {
+    axiosInstance.get('jobposts/').then((res) => {
       const allPosts = res.data;
       setAppState({ loading: false, posts: allPosts });
       

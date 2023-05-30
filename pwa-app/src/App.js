@@ -31,7 +31,7 @@ function App() {
             <Route path="/verifiedJobs" element={<VerifiedJobs />} />
             <Route path="/jobs/verifiedJobs" element={<ClientVerification />} />
 
-            <Route path="/post/:slug" element={<DetailScreen />} />
+            <Route path="/post/:id" element={<DetailScreen />} />
             <Route path="/create" element={<Create />} />
             <Route path="/edit/:id" element={<Edit />} />
           </Route>

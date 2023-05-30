@@ -7,63 +7,74 @@ import TextField from "@mui/material/TextField";
 import axiosInstance from "../../utils/axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+
 export default function Edit() {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const initialFormData = Object.freeze({
-    id: "",
-    title: "",
-    place: "",
-    description: "",
-    slug: "",
-  });
+const { id } = useParams();
 
-  const [formData, updateFormData] = useState(initialFormData);
+// Define initial form data state
+const initialFormData = Object.freeze({
+  id: "",
+  title: "",
+  place: "",
+  description: "",
+  slug: "",
+});
 
-  useEffect(() => {
-    axiosInstance.get("admin/edit/postdetail/" + id).then((res) => {
-      updateFormData({
-        ...formData,
-        title: res.data.title,
-        description: res.data.description,
-        slug: res.data.slug,
-        place: res.data.place,
-        job_date: res.data.job_date,
-        author: res.data.author,
-        status: res.data.status,
-        reward: res.data.reward,
-      });
-      console.log(res.data);
-    });
-    // eslint-disable-next-line
-  }, [updateFormData]);
+// Set up state variables
+const [formData, updateFormData] = useState(initialFormData);
 
-  const handleChange = (e) => {
+// Fetch job post details from the server when the component mounts
+useEffect(() => {
+  axiosInstance.get("jobpost/detail/" + id).then((res) => {
+    // Update form data state with the fetched details
     updateFormData({
       ...formData,
-      // Trimming any whitespace
-      [e.target.name]: e.target.value.trim(),
+      title: res.data.title,
+      description: res.data.description,
+      slug: res.data.slug,
+      place: res.data.place,
+      job_date: res.data.job_date,
+      author: res.data.author,
+      status: res.data.status,
+      reward: res.data.reward,
     });
-  };
+    console.log(res.data);
+  });
+  // eslint-disable-next-line
+}, [updateFormData]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
+// Event handler for form input changes
+const handleChange = (e) => {
+  updateFormData({
+    ...formData,
+    [e.target.name]: e.target.value.trim(),
+  });
+};
 
-    axiosInstance.put(`admin/edit/` + id + "/", {
-      title: formData.title,
-      place: formData.place,
-      job_date: formData.job_date,
-      slug: formData.slug,
-      author: 10,
-      description: formData.description,
-      status: "undone",
-      reward: formData.reward,
-    });
-    navigate({
-      pathname: "/home",
-    });
-  };
+// Event handler for form submission
+const handleSubmit = (e) => {
+  e.preventDefault();
+  console.log(formData);
+
+  // Send a PUT request to update the job post details
+  axiosInstance.put(`jobpost/edit/` + id + "/", {
+    title: formData.title,
+    place: formData.place,
+    job_date: formData.job_date,
+    slug: formData.slug,
+    author: 10,
+    description: formData.description,
+    status: "undone",
+    reward: formData.reward,
+  });
+
+  // Navigate to the home page
+  navigate({
+    pathname: "/home",
+  });
+};
+
 
   return (
     <Container component="main" maxWidth="sm">

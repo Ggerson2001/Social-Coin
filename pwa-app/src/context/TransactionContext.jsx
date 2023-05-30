@@ -52,101 +52,113 @@ export const TransactionProvider = ({ children }) => {
     setFormData((prevState) => ({ ...prevState, [name]: e.target.value }));
   };
 
-  const getAllTransactions = async () => {
-    try {
-      if (ethereum) {
-        const transactionsContract = EthereumContract();
+ const getAllTransactions = async () => {
+  try {
+    if (ethereum) {
+      // Create an instance of the Ethereum contract
+      const transactionsContract = EthereumContract();
 
-        const availableTransactions =
-          await transactionsContract.getAllTransactions();
+      // Fetch all available transactions from the contract
+      const availableTransactions = await transactionsContract.getAllTransactions();
 
-        const structuredTransactions = availableTransactions.map(
-          (transaction) => ({
-            addressTo: transaction.receiver,
-            addressFrom: transaction.sender,
-            timestamp: new Date(
-              transaction.timestamp.toNumber() * 1000
-            ).toLocaleString(),
-            message: transaction.message,
-            keyword: "test",
-            amount: parseInt(transaction.amount._hex) / 10 ** 18,
-            jobId: transaction.jobId,
-          })
-        );
+      // Structure the fetched transactions into a desired format
+      const structuredTransactions = availableTransactions.map((transaction) => ({
+        addressTo: transaction.receiver,
+        addressFrom: transaction.sender,
+        timestamp: new Date(transaction.timestamp.toNumber() * 1000).toLocaleString(),
+        message: transaction.message,
+        keyword: "test",
+        amount: parseInt(transaction.amount._hex) / 10 ** 18,
+        jobId: transaction.jobId,
+      }));
 
-        setTransactions(structuredTransactions);
-      } else {
-        console.log("Ethereum is not present");
-      }
-    } catch (error) {
-      console.log(error);
+      // Set the structured transactions in the component state
+      setTransactions(structuredTransactions);
+    } else {
+      console.log("Ethereum is not present");
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-  const checkIfWalletIsConnected = async () => {
-    try {
-      if (!ethereum) return alert("PLease install metamask");
 
-      const accounts = await ethereum.request({ method: "eth_accounts" });
+const checkIfWalletIsConnected = async () => {
+  try {
+    if (!ethereum) return alert("Please install MetaMask");
 
-      if (accounts.length) {
-        setCurrentAccount(accounts[0]);
-        getAllTransactions();
-        getAllJobVerification();
-      } else {
-        console.log("No accounts found");
-      }
-    } catch (error) {
-      console.log(error);
+    // Request the connected Ethereum accounts from the user's wallet
+    const accounts = await ethereum.request({ method: "eth_accounts" });
 
-      throw new Error("No ethereum object");
-    }
-  };
-
-  const connectWallet = async () => {
-    try {
-      if (!ethereum) return alert("PLease install metamask");
-
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
-
+    if (accounts.length) {
+      // Set the current connected account
       setCurrentAccount(accounts[0]);
-    } catch (error) {
-      console.log(error);
 
-      throw new Error("No ethereum object");
+      // Fetch all transactions and job verifications for the connected account
+      getAllTransactions();
+      getAllJobVerification();
+    } else {
+      console.log("No accounts found");
     }
-  };
+  } catch (error) {
+    console.log(error);
 
-  const checkIfTransactionsExists = async () => {
-    try {
-      if (ethereum) {
-        const transactionsContract = EthereumContract();
-        const currentTransactionCount =
-          await transactionsContract.getTransactionCount();
+    throw new Error("No Ethereum object");
+  }
+};
 
-        window.localStorage.setItem(
-          "transactionCount",
-          currentTransactionCount
-        );
-      }
-    } catch (error) {
-      console.log(error);
+const connectWallet = async () => {
+  try {
+    if (!ethereum) return alert("Please install MetaMask");
 
-      throw new Error("No ethereum object");
+    // Request the user to connect their wallet and retrieve the connected Ethereum accounts
+    const accounts = await ethereum.request({
+      method: "eth_requestAccounts",
+    });
+
+    // Set the current connected account
+    setCurrentAccount(accounts[0]);
+  } catch (error) {
+    console.log(error);
+
+    throw new Error("No Ethereum object");
+  }
+};
+
+const checkIfTransactionsExists = async () => {
+  try {
+    if (ethereum) {
+      // Get the transactions contract instance
+      const transactionsContract = EthereumContract();
+
+      // Retrieve the current transaction count from the contract
+      const currentTransactionCount = await transactionsContract.getTransactionCount();
+
+      // Store the current transaction count in the local storage
+      window.localStorage.setItem("transactionCount", currentTransactionCount);
     }
-  };
+  } catch (error) {
+    console.log(error);
 
-  const getAddressBalance = async (address) => {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const balance = await provider.getBalance(address);
+    throw new Error("No Ethereum object");
+  }
+};
 
-    if (balance) {
-      setBalance(ethers.utils.formatEther(balance));
-    }
-    console.log(`Balance: ${ethers.utils.formatEther(balance)} ether`);
-  };
+const getAddressBalance = async (address) => {
+  // Create a new Web3Provider instance using the current Ethereum provider
+  const provider = new ethers.providers.Web3Provider(ethereum);
+
+  // Retrieve the balance of the specified address
+  const balance = await provider.getBalance(address);
+
+  // If a balance is returned, update the state variable 'balance' with the formatted balance value
+  if (balance) {
+    setBalance(ethers.utils.formatEther(balance));
+  }
+
+  // Log the formatted balance value to the console
+  
+};
 
   const getBalance = async () => {
     const accounts = await ethereum.request({
@@ -156,8 +168,10 @@ export const TransactionProvider = ({ children }) => {
   };
 
   const verifyJob = async (lg, client, jobId) => {
+    // Create an instance of the transactions contract using EthereumContract()
     const transactionsContract = EthereumContract();
-
+  
+    // Check if the job has already been verified by iterating through the verifications array
     let isVerified = false;
     for (let i = 0; i < verifications.length; i++) {
       if (verifications[i].jobId === jobId) {
@@ -165,10 +179,12 @@ export const TransactionProvider = ({ children }) => {
         break;
       }
     }
-
+  
+    // If the job has not been verified, call the verifyJob function of the transactions contract
     if (!isVerified) {
       transactionsContract.verifyJob(lg, client, jobId);
     } else {
+      // If the job has already been verified, display an alert message
       return alert("Job is already verified");
     }
   };
@@ -176,17 +192,20 @@ export const TransactionProvider = ({ children }) => {
   const getAllJobVerification = async () => {
     try {
       if (ethereum) {
+        // Create an instance of the transactions contract using EthereumContract()
         const transactionsContract = EthereumContract();
-
-        const jobsVerified =
-          await transactionsContract.getAllJobVerifications();
-
+  
+        // Retrieve all job verifications from the transactions contract
+        const jobsVerified = await transactionsContract.getAllJobVerifications();
+  
+        // Structure the verification data to the desired format
         const structuredVerification = jobsVerified.map((verification) => ({
           lg: verification.lg,
           client: verification.client,
           jobId: verification.jobId,
         }));
-
+  
+        // Set the structured verification data in the component's state
         setVerifications(structuredVerification);
       } else {
         console.log("Ethereum is not present");
@@ -198,14 +217,20 @@ export const TransactionProvider = ({ children }) => {
 
   const sendTransaction = async (jobId) => {
     try {
-      if (!ethereum) return alert("PLease install metamask");
-
+      if (!ethereum) return alert("Please install MetaMask");
+  
+      // Destructure form data
       const { addressTo, amount, keyword, message } = formData;
+  
+      // Create an instance of the transactions contract using EthereumContract()
       const transactionsContract = EthereumContract();
+  
+      // Parse the amount value to Ether
       const parsedAmount = ethers.utils.parseEther(amount);
-
+  
       let isVerified = false;
       for (let i = 0; i < verifications.length; i++) {
+        // Check if the client and jobId exist in the verifications array
         if (
           verifications[i].client === addressTo &&
           verifications[i].jobId === jobId
@@ -214,10 +239,9 @@ export const TransactionProvider = ({ children }) => {
           break;
         }
       }
-
-      // // Check if the sender, receiver, and jobId exist in the verifications array
-
+  
       if (isVerified === true) {
+        // Add the transaction to the blockchain using the transactions contract
         const transactionHash = await transactionsContract.addToBlockchain(
           addressTo,
           parsedAmount,
@@ -225,7 +249,8 @@ export const TransactionProvider = ({ children }) => {
           keyword,
           jobId
         );
-
+  
+        // Send the transaction using eth_sendTransaction method of the Ethereum provider
         await ethereum.request({
           method: "eth_sendTransaction",
           params: [
@@ -237,32 +262,31 @@ export const TransactionProvider = ({ children }) => {
             },
           ],
         });
-
+  
         setIsLoading(true);
         console.log(`Loading - ${transactionHash.hash}`);
         await transactionHash.wait();
         setIsLoading(false);
         console.log(`Success - ${transactionHash.hash}`);
         setIsSuccess(true);
-
-        const transactionCount =
-          await transactionsContract.getTransactionCount();
-
+  
+        // Update the transaction count
+        const transactionCount = await transactionsContract.getTransactionCount();
         setTransactionCount(transactionCount.toNumber());
-
+  
+        // Redirect to the transactions page after a delay
         setTimeout(() => {
           window.location.replace("/mytransactions");
         }, 2000);
       } else {
         setJobNotVerified(true);
       }
-
-      // console.log(transactionCount);
     } catch (error) {
-      return alert("Transaction was unsuccesfull.Address is not correct ");
+      return alert("Transaction was unsuccessful. Address is not correct.");
       console.log(error);
     }
   };
+  
 
   useEffect(() => {
     checkIfWalletIsConnected();
